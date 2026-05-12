@@ -1,0 +1,102 @@
+{
+  "per_config": {
+    "A_single_agent": {
+      "mean_recall": 0.9833,
+      "mean_precision": 0.4796,
+      "mean_redundancy": 0.2,
+      "mean_relevance": 3.1,
+      "mean_tokens_in": 161.2333,
+      "mean_tokens_out": 434.7,
+      "mean_tokens_total": 595.9333,
+      "total_tokens_in": 4837,
+      "total_tokens_out": 13041,
+      "estimated_cost_usd": 0.00855,
+      "n_run_errors": 0,
+      "n_judge_errors": 0,
+      "n_scored": 30
+    },
+    "B_sequential_multi": {
+      "mean_recall": 0.9389,
+      "mean_precision": 0.4812,
+      "mean_redundancy": 1.7333,
+      "mean_relevance": 2.9333,
+      "mean_tokens_in": 1154.5333,
+      "mean_tokens_out": 538.0667,
+      "mean_tokens_total": 1692.6,
+      "total_tokens_in": 34636,
+      "total_tokens_out": 16142,
+      "estimated_cost_usd": 0.014881,
+      "n_run_errors": 0,
+      "n_judge_errors": 0,
+      "n_scored": 30
+    },
+    "C_parallel_multi": {
+      "mean_recall": 0.8056,
+      "mean_precision": 0.5497,
+      "mean_redundancy": 0.3,
+      "mean_relevance": 3.1333,
+      "mean_tokens_in": 1222.5333,
+      "mean_tokens_out": 569.0667,
+      "mean_tokens_total": 1791.6,
+      "total_tokens_in": 36676,
+      "total_tokens_out": 17072,
+      "estimated_cost_usd": 0.015745,
+      "n_run_errors": 0,
+      "n_judge_errors": 0,
+      "n_scored": 30
+    }
+  },
+  "per_config_per_category": {
+    "A_single_agent": {
+      "logic": {
+        "mean_recall": 1.0,
+        "mean_precision": 0.4171,
+        "n": 10
+      },
+      "security": {
+        "mean_recall": 1.0,
+        "mean_precision": 0.5558,
+        "n": 10
+      },
+      "style": {
+        "mean_recall": 0.95,
+        "mean_precision": 0.466,
+        "n": 10
+      }
+    },
+    "B_sequential_multi": {
+      "logic": {
+        "mean_recall": 1.0,
+        "mean_precision": 0.415,
+        "n": 10
+      },
+      "security": {
+        "mean_recall": 0.95,
+        "mean_precision": 0.5,
+        "n": 10
+      },
+      "style": {
+        "mean_recall": 0.8667,
+        "mean_precision": 0.5286,
+        "n": 10
+      }
+    },
+    "C_parallel_multi": {
+      "logic": {
+        "mean_recall": 1.0,
+        "mean_precision": 0.4667,
+        "n": 10
+      },
+      "security": {
+        "mean_recall": 0.95,
+        "mean_precision": 0.624,
+        "n": 10
+      },
+      "style": {
+        "mean_recall": 0.4667,
+        "mean_precision": 0.5583,
+        "n": 10
+      }
+    }
+  }
+}

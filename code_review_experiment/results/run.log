@@ -1,0 +1,718 @@
+Task exception was never retrieved
+future: <Task finished name='Task-125' coro=<AsyncClient.aclose() done, defined at /Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py:1978> exception=RuntimeError('Event loop is closed')>
+Traceback (most recent call last):
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py", line 1985, in aclose
+    await self._transport.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_transports/default.py", line 406, in aclose
+    await self._pool.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 353, in aclose
+    await self._close_connections(closing_connections)
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 345, in _close_connections
+    await connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection.py", line 173, in aclose
+    await self._connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/http11.py", line 258, in aclose
+    await self._network_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_backends/anyio.py", line 53, in aclose
+    await self._stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/streams/tls.py", line 241, in aclose
+    await self.transport_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/_backends/_asyncio.py", line 1329, in aclose
+    self._transport.close()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/selector_events.py", line 700, in close
+    self._loop.call_soon(self._call_connection_lost, None)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 746, in call_soon
+    self._check_closed()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 510, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+Task exception was never retrieved
+future: <Task finished name='Task-126' coro=<AsyncClient.aclose() done, defined at /Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py:1978> exception=RuntimeError('Event loop is closed')>
+Traceback (most recent call last):
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py", line 1985, in aclose
+    await self._transport.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_transports/default.py", line 406, in aclose
+    await self._pool.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 353, in aclose
+    await self._close_connections(closing_connections)
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 345, in _close_connections
+    await connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection.py", line 173, in aclose
+    await self._connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/http11.py", line 258, in aclose
+    await self._network_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_backends/anyio.py", line 53, in aclose
+    await self._stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/streams/tls.py", line 241, in aclose
+    await self.transport_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/_backends/_asyncio.py", line 1329, in aclose
+    self._transport.close()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/selector_events.py", line 700, in close
+    self._loop.call_soon(self._call_connection_lost, None)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 746, in call_soon
+    self._check_closed()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 510, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+Task exception was never retrieved
+future: <Task finished name='Task-127' coro=<AsyncClient.aclose() done, defined at /Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py:1978> exception=RuntimeError('Event loop is closed')>
+Traceback (most recent call last):
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py", line 1985, in aclose
+    await self._transport.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_transports/default.py", line 406, in aclose
+    await self._pool.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 353, in aclose
+    await self._close_connections(closing_connections)
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 345, in _close_connections
+    await connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection.py", line 173, in aclose
+    await self._connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/http11.py", line 258, in aclose
+    await self._network_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_backends/anyio.py", line 53, in aclose
+    await self._stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/streams/tls.py", line 241, in aclose
+    await self.transport_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/_backends/_asyncio.py", line 1329, in aclose
+    self._transport.close()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/selector_events.py", line 700, in close
+    self._loop.call_soon(self._call_connection_lost, None)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 746, in call_soon
+    self._check_closed()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 510, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+Task exception was never retrieved
+future: <Task finished name='Task-128' coro=<AsyncClient.aclose() done, defined at /Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py:1978> exception=RuntimeError('Event loop is closed')>
+Traceback (most recent call last):
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py", line 1985, in aclose
+    await self._transport.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_transports/default.py", line 406, in aclose
+    await self._pool.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 353, in aclose
+    await self._close_connections(closing_connections)
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 345, in _close_connections
+    await connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection.py", line 173, in aclose
+    await self._connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/http11.py", line 258, in aclose
+    await self._network_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_backends/anyio.py", line 53, in aclose
+    await self._stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/streams/tls.py", line 241, in aclose
+    await self.transport_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/_backends/_asyncio.py", line 1329, in aclose
+    self._transport.close()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/selector_events.py", line 700, in close
+    self._loop.call_soon(self._call_connection_lost, None)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 746, in call_soon
+    self._check_closed()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 510, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+Task exception was never retrieved
+future: <Task finished name='Task-129' coro=<AsyncClient.aclose() done, defined at /Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py:1978> exception=RuntimeError('Event loop is closed')>
+Traceback (most recent call last):
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py", line 1985, in aclose
+    await self._transport.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_transports/default.py", line 406, in aclose
+    await self._pool.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 353, in aclose
+    await self._close_connections(closing_connections)
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 345, in _close_connections
+    await connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection.py", line 173, in aclose
+    await self._connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/http11.py", line 258, in aclose
+    await self._network_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_backends/anyio.py", line 53, in aclose
+    await self._stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/streams/tls.py", line 241, in aclose
+    await self.transport_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/_backends/_asyncio.py", line 1329, in aclose
+    self._transport.close()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/selector_events.py", line 700, in close
+    self._loop.call_soon(self._call_connection_lost, None)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 746, in call_soon
+    self._check_closed()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 510, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+Task exception was never retrieved
+future: <Task finished name='Task-130' coro=<AsyncClient.aclose() done, defined at /Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py:1978> exception=RuntimeError('Event loop is closed')>
+Traceback (most recent call last):
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py", line 1985, in aclose
+    await self._transport.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_transports/default.py", line 406, in aclose
+    await self._pool.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 353, in aclose
+    await self._close_connections(closing_connections)
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 345, in _close_connections
+    await connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection.py", line 173, in aclose
+    await self._connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/http11.py", line 258, in aclose
+    await self._network_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_backends/anyio.py", line 53, in aclose
+    await self._stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/streams/tls.py", line 241, in aclose
+    await self.transport_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/_backends/_asyncio.py", line 1329, in aclose
+    self._transport.close()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/selector_events.py", line 700, in close
+    self._loop.call_soon(self._call_connection_lost, None)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 746, in call_soon
+    self._check_closed()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 510, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+Task exception was never retrieved
+future: <Task finished name='Task-131' coro=<AsyncClient.aclose() done, defined at /Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py:1978> exception=RuntimeError('Event loop is closed')>
+Traceback (most recent call last):
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py", line 1985, in aclose
+    await self._transport.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_transports/default.py", line 406, in aclose
+    await self._pool.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 353, in aclose
+    await self._close_connections(closing_connections)
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 345, in _close_connections
+    await connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection.py", line 173, in aclose
+    await self._connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/http11.py", line 258, in aclose
+    await self._network_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_backends/anyio.py", line 53, in aclose
+    await self._stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/streams/tls.py", line 241, in aclose
+    await self.transport_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/_backends/_asyncio.py", line 1329, in aclose
+    self._transport.close()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/selector_events.py", line 700, in close
+    self._loop.call_soon(self._call_connection_lost, None)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 746, in call_soon
+    self._check_closed()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 510, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+Task exception was never retrieved
+future: <Task finished name='Task-132' coro=<AsyncClient.aclose() done, defined at /Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py:1978> exception=RuntimeError('Event loop is closed')>
+Traceback (most recent call last):
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py", line 1985, in aclose
+    await self._transport.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_transports/default.py", line 406, in aclose
+    await self._pool.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 353, in aclose
+    await self._close_connections(closing_connections)
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 345, in _close_connections
+    await connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection.py", line 173, in aclose
+    await self._connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/http11.py", line 258, in aclose
+    await self._network_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_backends/anyio.py", line 53, in aclose
+    await self._stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/streams/tls.py", line 241, in aclose
+    await self.transport_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/_backends/_asyncio.py", line 1329, in aclose
+    self._transport.close()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/selector_events.py", line 700, in close
+    self._loop.call_soon(self._call_connection_lost, None)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 746, in call_soon
+    self._check_closed()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 510, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+Task exception was never retrieved
+future: <Task finished name='Task-221' coro=<AsyncClient.aclose() done, defined at /Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py:1978> exception=RuntimeError('Event loop is closed')>
+Traceback (most recent call last):
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py", line 1985, in aclose
+    await self._transport.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_transports/default.py", line 406, in aclose
+    await self._pool.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 353, in aclose
+    await self._close_connections(closing_connections)
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 345, in _close_connections
+    await connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection.py", line 173, in aclose
+    await self._connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/http11.py", line 258, in aclose
+    await self._network_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_backends/anyio.py", line 53, in aclose
+    await self._stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/streams/tls.py", line 241, in aclose
+    await self.transport_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/_backends/_asyncio.py", line 1329, in aclose
+    self._transport.close()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/selector_events.py", line 700, in close
+    self._loop.call_soon(self._call_connection_lost, None)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 746, in call_soon
+    self._check_closed()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 510, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+Task exception was never retrieved
+future: <Task finished name='Task-222' coro=<AsyncClient.aclose() done, defined at /Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py:1978> exception=RuntimeError('Event loop is closed')>
+Traceback (most recent call last):
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py", line 1985, in aclose
+    await self._transport.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_transports/default.py", line 406, in aclose
+    await self._pool.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 353, in aclose
+    await self._close_connections(closing_connections)
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 345, in _close_connections
+    await connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection.py", line 173, in aclose
+    await self._connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/http11.py", line 258, in aclose
+    await self._network_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_backends/anyio.py", line 53, in aclose
+    await self._stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/streams/tls.py", line 241, in aclose
+    await self.transport_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/_backends/_asyncio.py", line 1329, in aclose
+    self._transport.close()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/selector_events.py", line 700, in close
+    self._loop.call_soon(self._call_connection_lost, None)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 746, in call_soon
+    self._check_closed()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 510, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+Task exception was never retrieved
+future: <Task finished name='Task-223' coro=<AsyncClient.aclose() done, defined at /Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py:1978> exception=RuntimeError('Event loop is closed')>
+Traceback (most recent call last):
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py", line 1985, in aclose
+    await self._transport.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_transports/default.py", line 406, in aclose
+    await self._pool.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 353, in aclose
+    await self._close_connections(closing_connections)
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 345, in _close_connections
+    await connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection.py", line 173, in aclose
+    await self._connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/http11.py", line 258, in aclose
+    await self._network_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_backends/anyio.py", line 53, in aclose
+    await self._stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/streams/tls.py", line 241, in aclose
+    await self.transport_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/_backends/_asyncio.py", line 1329, in aclose
+    self._transport.close()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/selector_events.py", line 700, in close
+    self._loop.call_soon(self._call_connection_lost, None)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 746, in call_soon
+    self._check_closed()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 510, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+Task exception was never retrieved
+future: <Task finished name='Task-224' coro=<AsyncClient.aclose() done, defined at /Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py:1978> exception=RuntimeError('Event loop is closed')>
+Traceback (most recent call last):
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py", line 1985, in aclose
+    await self._transport.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_transports/default.py", line 406, in aclose
+    await self._pool.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 353, in aclose
+    await self._close_connections(closing_connections)
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 345, in _close_connections
+    await connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection.py", line 173, in aclose
+    await self._connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/http11.py", line 258, in aclose
+    await self._network_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_backends/anyio.py", line 53, in aclose
+    await self._stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/streams/tls.py", line 241, in aclose
+    await self.transport_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/_backends/_asyncio.py", line 1329, in aclose
+    self._transport.close()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/selector_events.py", line 700, in close
+    self._loop.call_soon(self._call_connection_lost, None)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 746, in call_soon
+    self._check_closed()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 510, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+Task exception was never retrieved
+future: <Task finished name='Task-225' coro=<AsyncClient.aclose() done, defined at /Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py:1978> exception=RuntimeError('Event loop is closed')>
+Traceback (most recent call last):
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py", line 1985, in aclose
+    await self._transport.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_transports/default.py", line 406, in aclose
+    await self._pool.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 353, in aclose
+    await self._close_connections(closing_connections)
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 345, in _close_connections
+    await connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection.py", line 173, in aclose
+    await self._connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/http11.py", line 258, in aclose
+    await self._network_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_backends/anyio.py", line 53, in aclose
+    await self._stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/streams/tls.py", line 241, in aclose
+    await self.transport_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/_backends/_asyncio.py", line 1329, in aclose
+    self._transport.close()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/selector_events.py", line 700, in close
+    self._loop.call_soon(self._call_connection_lost, None)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 746, in call_soon
+    self._check_closed()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 510, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+Task exception was never retrieved
+future: <Task finished name='Task-226' coro=<AsyncClient.aclose() done, defined at /Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py:1978> exception=RuntimeError('Event loop is closed')>
+Traceback (most recent call last):
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py", line 1985, in aclose
+    await self._transport.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_transports/default.py", line 406, in aclose
+    await self._pool.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 353, in aclose
+    await self._close_connections(closing_connections)
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 345, in _close_connections
+    await connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection.py", line 173, in aclose
+    await self._connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/http11.py", line 258, in aclose
+    await self._network_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_backends/anyio.py", line 53, in aclose
+    await self._stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/streams/tls.py", line 241, in aclose
+    await self.transport_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/_backends/_asyncio.py", line 1329, in aclose
+    self._transport.close()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/selector_events.py", line 700, in close
+    self._loop.call_soon(self._call_connection_lost, None)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 746, in call_soon
+    self._check_closed()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 510, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+Task exception was never retrieved
+future: <Task finished name='Task-227' coro=<AsyncClient.aclose() done, defined at /Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py:1978> exception=RuntimeError('Event loop is closed')>
+Traceback (most recent call last):
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py", line 1985, in aclose
+    await self._transport.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_transports/default.py", line 406, in aclose
+    await self._pool.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 353, in aclose
+    await self._close_connections(closing_connections)
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 345, in _close_connections
+    await connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection.py", line 173, in aclose
+    await self._connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/http11.py", line 258, in aclose
+    await self._network_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_backends/anyio.py", line 53, in aclose
+    await self._stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/streams/tls.py", line 241, in aclose
+    await self.transport_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/_backends/_asyncio.py", line 1329, in aclose
+    self._transport.close()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/selector_events.py", line 700, in close
+    self._loop.call_soon(self._call_connection_lost, None)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 746, in call_soon
+    self._check_closed()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 510, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+Task exception was never retrieved
+future: <Task finished name='Task-228' coro=<AsyncClient.aclose() done, defined at /Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py:1978> exception=RuntimeError('Event loop is closed')>
+Traceback (most recent call last):
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py", line 1985, in aclose
+    await self._transport.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_transports/default.py", line 406, in aclose
+    await self._pool.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 353, in aclose
+    await self._close_connections(closing_connections)
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 345, in _close_connections
+    await connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection.py", line 173, in aclose
+    await self._connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/http11.py", line 258, in aclose
+    await self._network_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_backends/anyio.py", line 53, in aclose
+    await self._stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/streams/tls.py", line 241, in aclose
+    await self.transport_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/_backends/_asyncio.py", line 1329, in aclose
+    self._transport.close()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/selector_events.py", line 700, in close
+    self._loop.call_soon(self._call_connection_lost, None)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 746, in call_soon
+    self._check_closed()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 510, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+Task exception was never retrieved
+future: <Task finished name='Task-229' coro=<AsyncClient.aclose() done, defined at /Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py:1978> exception=RuntimeError('Event loop is closed')>
+Traceback (most recent call last):
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_client.py", line 1985, in aclose
+    await self._transport.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpx/_transports/default.py", line 406, in aclose
+    await self._pool.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 353, in aclose
+    await self._close_connections(closing_connections)
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection_pool.py", line 345, in _close_connections
+    await connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/connection.py", line 173, in aclose
+    await self._connection.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_async/http11.py", line 258, in aclose
+    await self._network_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/httpcore/_backends/anyio.py", line 53, in aclose
+    await self._stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/streams/tls.py", line 241, in aclose
+    await self.transport_stream.aclose()
+  File "/Users/sogeking7/Library/Python/3.9/lib/python/site-packages/anyio/_backends/_asyncio.py", line 1329, in aclose
+    self._transport.close()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/selector_events.py", line 700, in close
+    self._loop.call_soon(self._call_connection_lost, None)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 746, in call_soon
+    self._check_closed()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 510, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+[run 1/30] sample=L1 category=logic
+    A_single_agent         tokens=  658  time=23.70s  err=-
+    B_sequential_multi     tokens= 1881  time=24.53s  err=-
+    C_parallel_multi       tokens= 1903  time=30.78s  err=-
+[run 2/30] sample=L2 category=logic
+    A_single_agent         tokens=  719  time=8.76s  err=-
+    B_sequential_multi     tokens= 1886  time=37.14s  err=-
+    C_parallel_multi       tokens= 1771  time=28.88s  err=-
+[run 3/30] sample=L3 category=logic
+    A_single_agent         tokens=  741  time=10.04s  err=-
+    B_sequential_multi     tokens= 1881  time=16.99s  err=-
+    C_parallel_multi       tokens= 1889  time=13.23s  err=-
+[run 4/30] sample=L4 category=logic
+    A_single_agent         tokens=  748  time=10.53s  err=-
+    B_sequential_multi     tokens= 1852  time=16.06s  err=-
+    C_parallel_multi       tokens= 1940  time=33.28s  err=-
+[run 5/30] sample=L5 category=logic
+    A_single_agent         tokens=  537  time=6.36s  err=-
+    B_sequential_multi     tokens= 1079  time=7.55s  err=-
+    C_parallel_multi       tokens= 1399  time=24.12s  err=-
+[run 6/30] sample=L6 category=logic
+    A_single_agent         tokens=  453  time=4.81s  err=-
+    B_sequential_multi     tokens= 1211  time=17.15s  err=-
+    C_parallel_multi       tokens= 1677  time=10.44s  err=-
+[run 7/30] sample=L7 category=logic
+    A_single_agent         tokens=  509  time=9.51s  err=-
+    B_sequential_multi     tokens= 1126  time=9.60s  err=-
+    C_parallel_multi       tokens= 1482  time=6.34s  err=-
+[run 8/30] sample=L8 category=logic
+    A_single_agent         tokens=  780  time=7.41s  err=-
+    B_sequential_multi     tokens= 1938  time=11.17s  err=-
+    C_parallel_multi       tokens= 1980  time=8.28s  err=-
+[run 9/30] sample=L9 category=logic
+    A_single_agent         tokens=  482  time=7.54s  err=-
+    B_sequential_multi     tokens= 1086  time=7.41s  err=-
+    C_parallel_multi       tokens= 1576  time=29.88s  err=-
+[run 10/30] sample=L10 category=logic
+    A_single_agent         tokens=  709  time=7.92s  err=-
+    B_sequential_multi     tokens= 2027  time=32.72s  err=-
+    C_parallel_multi       tokens= 2099  time=8.29s  err=-
+[run 11/30] sample=S1 category=security
+    A_single_agent         tokens=  685  time=6.89s  err=-
+    B_sequential_multi     tokens= 1828  time=27.25s  err=-
+    C_parallel_multi       tokens= 1975  time=23.34s  err=-
+[run 12/30] sample=S2 category=security
+    A_single_agent         tokens=  525  time=9.37s  err=-
+    B_sequential_multi     tokens= 1181  time=7.93s  err=-
+    C_parallel_multi       tokens= 1423  time=31.41s  err=-
+[run 13/30] sample=S3 category=security
+    A_single_agent         tokens=  580  time=11.81s  err=-
+    B_sequential_multi     tokens= 1761  time=34.55s  err=-
+    C_parallel_multi       tokens= 1661  time=7.86s  err=-
+[run 14/30] sample=S4 category=security
+    A_single_agent         tokens=  450  time=32.60s  err=-
+    B_sequential_multi     tokens= 1731  time=35.33s  err=-
+    C_parallel_multi       tokens= 1575  time=37.06s  err=-
+[run 15/30] sample=S5 category=security
+    A_single_agent         tokens=  640  time=12.14s  err=-
+    B_sequential_multi     tokens= 1878  time=22.09s  err=-
+    C_parallel_multi       tokens= 1899  time=40.95s  err=-
+[run 16/30] sample=S6 category=security
+    A_single_agent         tokens=  478  time=6.02s  err=-
+    B_sequential_multi     tokens= 1513  time=11.28s  err=-
+    C_parallel_multi       tokens= 1684  time=11.02s  err=-
+[run 17/30] sample=S7 category=security
+    A_single_agent         tokens=  512  time=7.23s  err=-
+    B_sequential_multi     tokens= 1833  time=18.03s  err=-
+    C_parallel_multi       tokens= 1899  time=10.70s  err=-
+[run 18/30] sample=S8 category=security
+    A_single_agent         tokens=  482  time=9.05s  err=-
+    B_sequential_multi     tokens= 1663  time=10.94s  err=-
+    C_parallel_multi       tokens= 1715  time=10.65s  err=-
+[run 19/30] sample=S9 category=security
+    A_single_agent         tokens=  626  time=11.79s  err=-
+    B_sequential_multi     tokens= 1845  time=14.73s  err=-
+    C_parallel_multi       tokens= 1856  time=8.51s  err=-
+[run 20/30] sample=S10 category=security
+    A_single_agent         tokens=  605  time=16.21s  err=-
+    B_sequential_multi     tokens= 1737  time=10.49s  err=-
+    C_parallel_multi       tokens= 1807  time=14.22s  err=-
+[run 21/30] sample=ST1 category=style
+    A_single_agent         tokens=  565  time=9.82s  err=-
+    B_sequential_multi     tokens= 1750  time=16.42s  err=-
+    C_parallel_multi       tokens= 1875  time=9.05s  err=-
+[run 22/30] sample=ST2 category=style
+    A_single_agent         tokens=  527  time=6.01s  err=-
+    B_sequential_multi     tokens= 1758  time=14.07s  err=-
+    C_parallel_multi       tokens= 1739  time=8.43s  err=-
+[run 23/30] sample=ST3 category=style
+    A_single_agent         tokens=  575  time=11.97s  err=-
+    B_sequential_multi     tokens= 1851  time=12.61s  err=-
+    C_parallel_multi       tokens= 1825  time=11.57s  err=-
+[run 24/30] sample=ST4 category=style
+    A_single_agent         tokens=  460  time=8.14s  err=-
+    B_sequential_multi     tokens= 1530  time=10.80s  err=-
+    C_parallel_multi       tokens= 1868  time=8.09s  err=-
+[run 25/30] sample=ST5 category=style
+    A_single_agent         tokens=  677  time=13.17s  err=-
+    B_sequential_multi     tokens= 1890  time=17.22s  err=-
+    C_parallel_multi       tokens= 1916  time=17.66s  err=-
+[run 26/30] sample=ST6 category=style
+    A_single_agent         tokens=  779  time=10.67s  err=-
+    B_sequential_multi     tokens= 2025  time=52.62s  err=-
+    C_parallel_multi       tokens= 2095  time=7.95s  err=-
+[run 27/30] sample=ST7 category=style
+    A_single_agent         tokens=  802  time=19.54s  err=-
+    B_sequential_multi     tokens= 1968  time=10.79s  err=-
+    C_parallel_multi       tokens= 2019  time=10.12s  err=-
+[run 28/30] sample=ST8 category=style
+    A_single_agent         tokens=  513  time=5.30s  err=-
+    B_sequential_multi     tokens= 1590  time=17.60s  err=-
+    C_parallel_multi       tokens= 1675  time=10.75s  err=-
+[run 29/30] sample=ST9 category=style
+    A_single_agent         tokens=  560  time=12.10s  err=-
+    B_sequential_multi     tokens= 1685  time=12.93s  err=-
+    C_parallel_multi       tokens= 1740  time=6.38s  err=-
+[run 30/30] sample=ST10 category=style
+    A_single_agent         tokens=  501  time=6.34s  err=-
+    B_sequential_multi     tokens= 1794  time=13.06s  err=-
+    C_parallel_multi       tokens= 1786  time=8.36s  err=-
+[judge 1/90] sample=L1 config=A_single_agent  recall=1.00 precision=0.86 redund=0 rel=5  ok
+[judge 2/90] sample=L1 config=B_sequential_multi  recall=1.00 precision=0.50 redund=3 rel=3  ok
+[judge 3/90] sample=L1 config=C_parallel_multi  recall=1.00 precision=0.67 redund=0 rel=4  ok
+[judge 4/90] sample=L2 config=A_single_agent  recall=1.00 precision=0.11 redund=1 rel=2  ok
+[judge 5/90] sample=L2 config=B_sequential_multi  recall=1.00 precision=0.20 redund=1 rel=2  ok
+[judge 6/90] sample=L2 config=C_parallel_multi  recall=1.00 precision=0.67 redund=0 rel=4  ok
+[judge 7/90] sample=L3 config=A_single_agent  recall=1.00 precision=0.29 redund=0 rel=3  ok
+[judge 8/90] sample=L3 config=B_sequential_multi  recall=1.00 precision=0.50 redund=2 rel=3  ok
+[judge 9/90] sample=L3 config=C_parallel_multi  recall=1.00 precision=0.67 redund=0 rel=4  ok
+[judge 10/90] sample=L4 config=A_single_agent  recall=1.00 precision=0.29 redund=0 rel=2  ok
+[judge 11/90] sample=L4 config=B_sequential_multi  recall=1.00 precision=0.50 redund=1 rel=3  ok
+[judge 12/90] sample=L4 config=C_parallel_multi  recall=1.00 precision=0.50 redund=1 rel=3  ok
+[judge 13/90] sample=L5 config=A_single_agent  recall=1.00 precision=0.75 redund=1 rel=4  ok
+[judge 14/90] sample=L5 config=B_sequential_multi  recall=1.00 precision=0.25 redund=1 rel=2  ok
+[judge 15/90] sample=L5 config=C_parallel_multi  recall=1.00 precision=0.25 redund=0 rel=2  ok
+[judge 16/90] sample=L6 config=A_single_agent  recall=1.00 precision=0.50 redund=0 rel=3  ok
+[judge 17/90] sample=L6 config=B_sequential_multi  recall=1.00 precision=0.20 redund=0 rel=2  ok
+[judge 18/90] sample=L6 config=C_parallel_multi  recall=1.00 precision=0.33 redund=0 rel=3  ok
+[judge 19/90] sample=L7 config=A_single_agent  recall=1.00 precision=0.17 redund=0 rel=2  ok
+[judge 20/90] sample=L7 config=B_sequential_multi  recall=1.00 precision=0.50 redund=1 rel=3  ok
+[judge 21/90] sample=L7 config=C_parallel_multi  recall=1.00 precision=0.50 redund=0 rel=3  ok
+[judge 22/90] sample=L8 config=A_single_agent  recall=1.00 precision=0.43 redund=0 rel=3  ok
+[judge 23/90] sample=L8 config=B_sequential_multi  recall=1.00 precision=0.50 redund=3 rel=3  ok
+[judge 24/90] sample=L8 config=C_parallel_multi  recall=1.00 precision=0.50 redund=0 rel=3  ok
+[judge 25/90] sample=L9 config=A_single_agent  recall=1.00 precision=0.29 redund=0 rel=3  ok
+[judge 26/90] sample=L9 config=B_sequential_multi  recall=1.00 precision=0.50 redund=0 rel=3  ok
+[judge 27/90] sample=L9 config=C_parallel_multi  recall=1.00 precision=0.25 redund=0 rel=2  ok
+[judge 28/90] sample=L10 config=A_single_agent  recall=1.00 precision=0.50 redund=0 rel=3  ok
+[judge 29/90] sample=L10 config=B_sequential_multi  recall=1.00 precision=0.50 redund=2 rel=3  ok
+[judge 30/90] sample=L10 config=C_parallel_multi  recall=1.00 precision=0.33 redund=0 rel=2  ok
+[judge 31/90] sample=S1 config=A_single_agent  recall=1.00 precision=0.75 redund=1 rel=4  ok
+[judge 32/90] sample=S1 config=B_sequential_multi  recall=1.00 precision=0.50 redund=1 rel=3  ok
+[judge 33/90] sample=S1 config=C_parallel_multi  recall=1.00 precision=0.33 redund=0 rel=2  ok
+[judge 34/90] sample=S2 config=A_single_agent  recall=1.00 precision=0.83 redund=0 rel=4  ok
+[judge 35/90] sample=S2 config=B_sequential_multi  recall=1.00 precision=0.50 redund=0 rel=3  ok
+[judge 36/90] sample=S2 config=C_parallel_multi  recall=1.00 precision=0.50 redund=1 rel=3  ok
+[judge 37/90] sample=S3 config=A_single_agent  recall=1.00 precision=0.50 redund=0 rel=3  ok
+[judge 38/90] sample=S3 config=B_sequential_multi  recall=1.00 precision=0.50 redund=3 rel=3  ok
+[judge 39/90] sample=S3 config=C_parallel_multi  recall=1.00 precision=0.75 redund=0 rel=4  ok
+[judge 40/90] sample=S4 config=A_single_agent  recall=1.00 precision=0.50 redund=0 rel=3  ok
+[judge 41/90] sample=S4 config=B_sequential_multi  recall=1.00 precision=0.50 redund=2 rel=3  ok
+[judge 42/90] sample=S4 config=C_parallel_multi  recall=1.00 precision=1.00 redund=0 rel=5  ok
+[judge 43/90] sample=S5 config=A_single_agent  recall=1.00 precision=0.50 redund=0 rel=3  ok
+[judge 44/90] sample=S5 config=B_sequential_multi  recall=1.00 precision=0.50 redund=2 rel=3  ok
+[judge 45/90] sample=S5 config=C_parallel_multi  recall=1.00 precision=0.67 redund=1 rel=4  ok
+[judge 46/90] sample=S6 config=A_single_agent  recall=1.00 precision=0.60 redund=0 rel=3  ok
+[judge 47/90] sample=S6 config=B_sequential_multi  recall=1.00 precision=0.50 redund=1 rel=3  ok
+[judge 48/90] sample=S6 config=C_parallel_multi  recall=1.00 precision=0.33 redund=0 rel=3  ok
+[judge 49/90] sample=S7 config=A_single_agent  recall=1.00 precision=0.40 redund=0 rel=3  ok
+[judge 50/90] sample=S7 config=B_sequential_multi  recall=1.00 precision=0.50 redund=2 rel=3  ok
+[judge 51/90] sample=S7 config=C_parallel_multi  recall=1.00 precision=0.33 redund=0 rel=3  ok
+[judge 52/90] sample=S8 config=A_single_agent  recall=1.00 precision=0.60 redund=1 rel=3  ok
+[judge 53/90] sample=S8 config=B_sequential_multi  recall=1.00 precision=0.50 redund=2 rel=3  ok
+[judge 54/90] sample=S8 config=C_parallel_multi  recall=1.00 precision=1.00 redund=1 rel=4  ok
+[judge 55/90] sample=S9 config=A_single_agent  recall=1.00 precision=0.50 redund=0 rel=3  ok
+[judge 56/90] sample=S9 config=B_sequential_multi  recall=0.50 precision=0.50 redund=2 rel=3  ok
+[judge 57/90] sample=S9 config=C_parallel_multi  recall=0.50 precision=0.33 redund=0 rel=3  ok
+[judge 58/90] sample=S10 config=A_single_agent  recall=1.00 precision=0.38 redund=0 rel=3  ok
+[judge 59/90] sample=S10 config=B_sequential_multi  recall=1.00 precision=0.50 redund=2 rel=3  ok
+[judge 60/90] sample=S10 config=C_parallel_multi  recall=1.00 precision=1.00 redund=1 rel=4  ok
+[judge 61/90] sample=ST1 config=A_single_agent  recall=1.00 precision=0.57 redund=0 rel=3  ok
+[judge 62/90] sample=ST1 config=B_sequential_multi  recall=1.00 precision=0.50 redund=2 rel=3  ok
+[judge 63/90] sample=ST1 config=C_parallel_multi  recall=0.50 precision=0.75 redund=0 rel=3  ok
+[judge 64/90] sample=ST2 config=A_single_agent  recall=1.00 precision=0.50 redund=0 rel=3  ok
+[judge 65/90] sample=ST2 config=B_sequential_multi  recall=1.00 precision=0.50 redund=3 rel=3  ok
+[judge 66/90] sample=ST2 config=C_parallel_multi  recall=1.00 precision=0.67 redund=0 rel=4  ok
+[judge 67/90] sample=ST3 config=A_single_agent  recall=1.00 precision=0.50 redund=0 rel=4  ok
+[judge 68/90] sample=ST3 config=B_sequential_multi  recall=1.00 precision=0.50 redund=3 rel=3  ok
+[judge 69/90] sample=ST3 config=C_parallel_multi  recall=0.00 precision=0.00 redund=0 rel=2  ok
+[judge 70/90] sample=ST4 config=A_single_agent  recall=1.00 precision=0.50 redund=0 rel=3  ok
+[judge 71/90] sample=ST4 config=B_sequential_multi  recall=1.00 precision=0.75 redund=2 rel=4  ok
+[judge 72/90] sample=ST4 config=C_parallel_multi  recall=0.50 precision=0.75 redund=1 rel=3  ok
+[judge 73/90] sample=ST5 config=A_single_agent  recall=1.00 precision=0.62 redund=0 rel=4  ok
+[judge 74/90] sample=ST5 config=B_sequential_multi  recall=0.67 precision=0.50 redund=3 rel=3  ok
+[judge 75/90] sample=ST5 config=C_parallel_multi  recall=0.67 precision=1.00 redund=0 rel=4  ok
+[judge 76/90] sample=ST6 config=A_single_agent  recall=1.00 precision=0.29 redund=0 rel=3  ok
+[judge 77/90] sample=ST6 config=B_sequential_multi  recall=1.00 precision=0.50 redund=2 rel=3  ok
+[judge 78/90] sample=ST6 config=C_parallel_multi  recall=0.00 precision=0.00 redund=2 rel=2  ok
+[judge 79/90] sample=ST7 config=A_single_agent  recall=0.50 precision=0.25 redund=0 rel=2  ok
+[judge 80/90] sample=ST7 config=B_sequential_multi  recall=0.50 precision=0.50 redund=1 rel=3  ok
+[judge 81/90] sample=ST7 config=C_parallel_multi  recall=0.50 precision=0.67 redund=0 rel=3  ok
+[judge 82/90] sample=ST8 config=A_single_agent  recall=1.00 precision=0.50 redund=1 rel=3  ok
+[judge 83/90] sample=ST8 config=B_sequential_multi  recall=1.00 precision=0.50 redund=2 rel=3  ok
+[judge 84/90] sample=ST8 config=C_parallel_multi  recall=0.50 precision=1.00 redund=0 rel=3  ok
+[judge 85/90] sample=ST9 config=A_single_agent  recall=1.00 precision=0.43 redund=0 rel=3  ok
+[judge 86/90] sample=ST9 config=B_sequential_multi  recall=0.50 precision=0.29 redund=1 rel=2  ok
+[judge 87/90] sample=ST9 config=C_parallel_multi  recall=0.50 precision=0.25 redund=1 rel=2  ok
+[judge 88/90] sample=ST10 config=A_single_agent  recall=1.00 precision=0.50 redund=1 rel=3  ok
+[judge 89/90] sample=ST10 config=B_sequential_multi  recall=1.00 precision=0.75 redund=2 rel=4  ok
+[judge 90/90] sample=ST10 config=C_parallel_multi  recall=0.50 precision=0.50 redund=0 rel=3  ok
+
+# Comparison Table
+
+Token budget: 600 output tokens per sample across all configurations.
+Costs are for agent calls only (gpt-4o-mini) and exclude judge tokens.
+
+| Metric              | Config A (Single) | Config B (Sequential) | Config C (Parallel) |
+|---------------------|-------------------|-----------------------|---------------------|
+| Mean Recall         | 98.3% | 93.9% | 80.6% |
+| Mean Precision      | 48.0% | 48.1% | 55.0% |
+| Mean Redundancy     | 0.200 | 1.733 | 0.300 |
+| Mean Relevance      | 3.100 | 2.933 | 3.133 |
+| Mean Tokens Used    | 595.9 | 1692.6 | 1791.6 |
+| Est. Cost per 30    | $0.0086 | $0.0149 | $0.0157 |
+
+## Per-category recall (defect-finding by issue type)
+
+| Category | Config A | Config B | Config C |
+|----------|----------|----------|----------|
+| logic    | 100.0% | 100.0% | 100.0% |
+| security | 100.0% | 95.0% | 95.0% |
+| style    | 95.0% | 86.7% | 46.7% |
+
+## Run / judge errors
+
+| Config | Run errors | Judge errors | Samples scored |
+|--------|-----------:|-------------:|---------------:|
+| A_single_agent | 0 | 0 | 30 |
+| B_sequential_multi | 0 | 0 | 30 |
+| C_parallel_multi | 0 | 0 | 30 |
+
+Qualitative examples written to /Users/sogeking7/My Documents/aitu/multi-agent-v2/code_review_experiment/results/qualitative_examples.md

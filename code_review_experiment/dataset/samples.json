@@ -1,0 +1,255 @@
+[
+  {
+    "id": "L1",
+    "category": "logic",
+    "code": "from typing import Iterable, List, TypeVar\n\nT = TypeVar(\"T\")\n\n\ndef paginate(items: List[T], page: int, page_size: int) -> List[T]:\n    \"\"\"Return the items belonging to the requested 1-indexed page.\"\"\"\n    start = page * page_size\n    end = start + page_size\n    return items[start:end]\n\n\ndef page_count(items: Iterable[T], page_size: int) -> int:\n    return (len(list(items)) + page_size - 1) // page_size",
+    "known_issues": [
+      "Off-by-one in paginate: start should be (page - 1) * page_size for 1-indexed pages; current code skips the first page entirely (page=1 returns items[size:2*size])."
+    ]
+  },
+  {
+    "id": "L2",
+    "category": "logic",
+    "code": "from typing import List\n\n\ndef moving_average(values: List[float], window: int) -> List[float]:\n    \"\"\"Return the moving average of `values` over a fixed window size.\"\"\"\n    if window <= 0:\n        raise ValueError(\"window must be positive\")\n    if window > len(values):\n        return []\n    result: List[float] = []\n    for i in range(len(values) - window):\n        window_slice = values[i:i + window]\n        result.append(sum(window_slice) / window)\n    return result",
+    "known_issues": [
+      "Off-by-one in the loop bound: range(len(values) - window) skips the final window; should be range(len(values) - window + 1)."
+    ]
+  },
+  {
+    "id": "L3",
+    "category": "logic",
+    "code": "from typing import List\n\n\ndef median(numbers: List[float]) -> float:\n    \"\"\"Return the median of a numeric list.\"\"\"\n    sorted_nums = sorted(numbers)\n    n = len(sorted_nums)\n    if n % 2 == 0:\n        return (sorted_nums[n // 2 - 1] + sorted_nums[n // 2]) / 2\n    return sorted_nums[n // 2]\n\n\ndef summarize(numbers: List[float]) -> dict:\n    return {\"min\": min(numbers), \"max\": max(numbers), \"median\": median(numbers)}",
+    "known_issues": [
+      "No handling for empty input: median([]) raises IndexError instead of returning None or raising a meaningful error.",
+      "summarize() also fails on empty input via min/max; the empty-list case is not propagated cleanly."
+    ]
+  },
+  {
+    "id": "L4",
+    "category": "logic",
+    "code": "import time\nfrom typing import List\n\n\ndef append_log(message: str, history: List[dict] = []) -> List[dict]:\n    \"\"\"Append a message to a history list and return the updated list.\"\"\"\n    history.append({\"msg\": message, \"ts\": time.time()})\n    return history\n\n\ndef reset_log() -> List[dict]:\n    # Reset by handing back a new list; callers should use this.\n    return []\n\n\ndef latest_messages(history: List[dict], n: int = 5) -> List[dict]:\n    return history[-n:]",
+    "known_issues": [
+      "Mutable default argument: history=[] is shared across all calls that omit the argument, causing state to leak between unrelated callers."
+    ]
+  },
+  {
+    "id": "L5",
+    "category": "logic",
+    "code": "def average_grade(grades):\n    \"\"\"Return the arithmetic mean of a list of numeric grades.\"\"\"\n    total = 0\n    count = 0\n    for g in grades:\n        total += g\n        count += 1\n    if count == 0:\n        return 0\n    return total // count",
+    "known_issues": [
+      "Uses integer floor division (//) where true mean is expected; for grades like [85, 92, 78] this returns 85 instead of 85.0."
+    ]
+  },
+  {
+    "id": "L6",
+    "category": "logic",
+    "code": "def make_event_handlers(event_names):\n    \"\"\"Return a list of callables, one per event name.\"\"\"\n    handlers = []\n    for name in event_names:\n        handlers.append(lambda: print(f\"handling {name}\"))\n    return handlers\n\n\nif __name__ == \"__main__\":\n    for h in make_event_handlers([\"click\", \"hover\", \"drag\"]):\n        h()",
+    "known_issues": [
+      "Late-binding closure: every lambda captures the variable `name`, not its value, so all handlers print the last event in the list (\"drag\")."
+    ]
+  },
+  {
+    "id": "L7",
+    "category": "logic",
+    "code": "def can_edit_post(user, post):\n    \"\"\"Return True iff `user` is permitted to edit `post`.\"\"\"\n    if user.is_admin:\n        return True\n    if post.author_id == user.id:\n        return True\n    # Allow editors of equal or higher rank to moderate.\n    if user.role_level <= post.required_level:\n        return True\n    return False",
+    "known_issues": [
+      "Inverted comparison: `user.role_level <= post.required_level` lets LOWER-privileged users edit; should be `>=`. This is a privilege-escalation bug."
+    ]
+  },
+  {
+    "id": "L8",
+    "category": "logic",
+    "code": "def factorial(n: int) -> int:\n    \"\"\"Return n! for non-negative integer n.\"\"\"\n    if n == 1:\n        return 1\n    return n * factorial(n - 1)\n\n\ndef n_choose_k(n: int, k: int) -> int:\n    \"\"\"Return the binomial coefficient C(n, k).\"\"\"\n    if k < 0 or k > n:\n        return 0\n    return factorial(n) // (factorial(k) * factorial(n - k))\n\n\ndef permutations(n: int, k: int) -> int:\n    return factorial(n) // factorial(n - k)",
+    "known_issues": [
+      "Missing base case for n == 0: factorial(0) recurses into negative arguments and overflows the stack. n_choose_k(n, 0) / n_choose_k(n, n) / permutations(n, n) therefore crash."
+    ]
+  },
+  {
+    "id": "L9",
+    "category": "logic",
+    "code": "def parse_csv_line(line):\n    \"\"\"Parse a single CSV line into a list of cell strings.\"\"\"\n    parts = line.split(\",\")\n    cleaned = []\n    for p in parts:\n        p = p.strip()\n        if p.startswith('\"') and p.endswith('\"'):\n            p = p[1:-1]\n        cleaned.append(p)\n    return cleaned",
+    "known_issues": [
+      "Naive split on ',' breaks on quoted fields containing commas (e.g. 'a,\"b,c\",d' yields 4 cells instead of 3); a CSV parser or a proper state machine is needed."
+    ]
+  },
+  {
+    "id": "L10",
+    "category": "logic",
+    "code": "from typing import List\n\n\ndef is_paid_in_full(amount_paid: float, total_due: float) -> bool:\n    \"\"\"Return True if the customer has paid exactly the amount owed.\"\"\"\n    return amount_paid == total_due\n\n\ndef remaining_balance(amount_paid: float, total_due: float) -> float:\n    if is_paid_in_full(amount_paid, total_due):\n        return 0.0\n    return total_due - amount_paid\n\n\ndef settle_invoices(invoices: List[dict]) -> List[dict]:\n    result = []\n    for inv in invoices:\n        inv[\"balance\"] = remaining_balance(inv[\"paid\"], inv[\"due\"])\n        inv[\"closed\"] = is_paid_in_full(inv[\"paid\"], inv[\"due\"])\n        result.append(inv)\n    return result",
+    "known_issues": [
+      "Direct float equality in is_paid_in_full: financial sums computed from prior arithmetic rarely hit exact equality (e.g. 0.1 + 0.2 != 0.3). Should compare with a tolerance or use Decimal \u2014 this flows into settle_invoices marking invoices as un-closed even when they are paid in full."
+    ]
+  },
+  {
+    "id": "S1",
+    "category": "security",
+    "code": "import sqlite3\nfrom typing import Optional, Tuple\n\n\ndef get_user_by_username(\n    conn: sqlite3.Connection, username: str\n) -> Optional[Tuple[int, str, str]]:\n    \"\"\"Look up a user by username and return (id, email, role).\"\"\"\n    cursor = conn.cursor()\n    query = f\"SELECT id, email, role FROM users WHERE username = '{username}'\"\n    cursor.execute(query)\n    return cursor.fetchone()\n\n\ndef authenticate(conn: sqlite3.Connection, username: str, _password: str) -> bool:\n    return get_user_by_username(conn, username) is not None",
+    "known_issues": [
+      "SQL injection via f-string interpolation of `username` into the query. Must use parameterized queries (e.g. cursor.execute(\"... WHERE username = ?\", (username,))). The authenticate() wrapper inherits the same vulnerability."
+    ]
+  },
+  {
+    "id": "S2",
+    "category": "security",
+    "code": "import psycopg2\n\n\ndef connect_to_production_db():\n    \"\"\"Return a connection to the production users database.\"\"\"\n    return psycopg2.connect(\n        host=\"prod-db.internal.example.com\",\n        port=5432,\n        user=\"admin\",\n        password=\"P@ssw0rd2024!\",\n        database=\"users\",\n        sslmode=\"require\",\n    )",
+    "known_issues": [
+      "Hardcoded production credentials (user 'admin', password 'P@ssw0rd2024!') in source. Secrets must come from environment variables or a secret manager; committing them to a repo leaks them permanently via git history."
+    ]
+  },
+  {
+    "id": "S3",
+    "category": "security",
+    "code": "import pickle\n\n\ndef load_user_session(session_blob: bytes):\n    \"\"\"Restore a user session previously serialized with `pickle.dumps`.\"\"\"\n    return pickle.loads(session_blob)\n\n\ndef restore_from_request(request):\n    cookie = request.cookies.get(\"session\")\n    if cookie is None:\n        return None\n    return load_user_session(bytes.fromhex(cookie))",
+    "known_issues": [
+      "Insecure deserialization: pickle.loads on attacker-controlled data (a cookie value) allows arbitrary code execution via __reduce__. Use a signed JSON token or itsdangerous instead."
+    ]
+  },
+  {
+    "id": "S4",
+    "category": "security",
+    "code": "from pathlib import Path\n\n\nUSER_DATA_ROOT = \"/var/data/users\"\n\n\ndef read_user_file(username: str, filename: str) -> bytes:\n    path = f\"{USER_DATA_ROOT}/{username}/{filename}\"\n    with open(path, \"rb\") as f:\n        return f.read()",
+    "known_issues": [
+      "Path traversal: `filename='../../../etc/passwd'` escapes USER_DATA_ROOT. Must resolve and verify the path is contained within USER_DATA_ROOT (e.g. Path(USER_DATA_ROOT).resolve() then check is_relative_to)."
+    ]
+  },
+  {
+    "id": "S5",
+    "category": "security",
+    "code": "import random\nimport string\nimport time\n\n\ndef generate_password_reset_token(length: int = 32) -> str:\n    \"\"\"Generate a single-use token to email to the user.\"\"\"\n    random.seed(int(time.time()))\n    alphabet = string.ascii_letters + string.digits\n    return \"\".join(random.choice(alphabet) for _ in range(length))\n\n\ndef send_reset_email(user_email: str) -> str:\n    token = generate_password_reset_token()\n    # Pretend to email the token to the user.\n    return token",
+    "known_issues": [
+      "Uses `random` (Mersenne Twister, predictable from a few observed outputs) for a security-sensitive token. Must use `secrets.token_urlsafe` or `secrets.choice` from the `secrets` module.",
+      "Seeding random with `int(time.time())` makes the token even more predictable \u2014 an attacker who knows the approximate request time can enumerate the seed space."
+    ]
+  },
+  {
+    "id": "S6",
+    "category": "security",
+    "code": "import subprocess\nfrom typing import List\n\n\ndef get_file_info(filename: str) -> str:\n    \"\"\"Return the output of `stat` for the given file.\"\"\"\n    result = subprocess.check_output(\n        f\"stat {filename}\", shell=True, text=True\n    )\n    return result\n\n\ndef batch_file_info(filenames: List[str]) -> List[str]:\n    return [get_file_info(f) for f in filenames]",
+    "known_issues": [
+      "Command injection: `shell=True` with an f-string lets a filename like 'foo; rm -rf /' execute arbitrary shell. Must pass a list of args and shell=False (e.g. ['stat', filename]). batch_file_info inherits this vulnerability across every input."
+    ]
+  },
+  {
+    "id": "S7",
+    "category": "security",
+    "code": "from typing import List\n\n\ndef render_comment(comment_text: str, author_name: str) -> str:\n    \"\"\"Render a user's comment for inclusion in an HTML page.\"\"\"\n    return (\n        f\"<div class='comment'>\"\n        f\"<strong>{author_name}</strong>: \"\n        f\"<span>{comment_text}</span>\"\n        f\"</div>\"\n    )\n\n\ndef render_comment_thread(comments: List[dict]) -> str:\n    return \"\\n\".join(\n        render_comment(c[\"text\"], c[\"author\"]) for c in comments\n    )",
+    "known_issues": [
+      "Stored XSS: user-controlled `comment_text` and `author_name` are interpolated raw into HTML. Must HTML-escape (html.escape) or use a templating engine with auto-escape. render_comment_thread amplifies the vulnerability across every comment."
+    ]
+  },
+  {
+    "id": "S8",
+    "category": "security",
+    "code": "import hashlib\n\n\ndef hash_password(password: str) -> str:\n    \"\"\"Hash a password for storage.\"\"\"\n    return hashlib.md5(password.encode(\"utf-8\")).hexdigest()\n\n\ndef verify_password(password: str, stored_hash: str) -> bool:\n    return hash_password(password) == stored_hash",
+    "known_issues": [
+      "MD5 (and any fast, unsalted hash) is unsuitable for passwords: rainbow-table lookups, GPU brute-force, no per-user salt. Use a slow KDF like bcrypt, scrypt, or argon2 with a unique salt.",
+      "verify_password uses '==' (non-constant-time comparison), enabling timing attacks; should use hmac.compare_digest."
+    ]
+  },
+  {
+    "id": "S9",
+    "category": "security",
+    "code": "import requests\n\n\ndef fetch_user_avatar(image_url: str) -> bytes:\n    \"\"\"Download a user-supplied avatar URL and return the image bytes.\"\"\"\n    response = requests.get(image_url, timeout=5)\n    response.raise_for_status()\n    return response.content\n\n\ndef save_avatar_for(user_id: int, image_url: str, store) -> None:\n    data = fetch_user_avatar(image_url)\n    store.put(f\"avatars/{user_id}.png\", data)",
+    "known_issues": [
+      "Server-Side Request Forgery (SSRF): unvalidated user-supplied URL can be pointed at internal services (http://169.254.169.254/, http://localhost:8080/admin). Must validate scheme/host and block private/loopback/link-local ranges.",
+      "No content-type or size limit: a malicious URL can return arbitrary bytes (e.g. multi-GB) that the store then persists under a .png extension."
+    ]
+  },
+  {
+    "id": "S10",
+    "category": "security",
+    "code": "from typing import Any\n\n\ndef calculate(expression: str) -> Any:\n    \"\"\"Evaluate a simple arithmetic expression like '2 + 2 * 3'.\"\"\"\n    return eval(expression)\n\n\ndef handle_calc_request(form) -> dict:\n    expr = form.get(\"expr\", \"0\")\n    return {\"result\": calculate(expr)}\n\n\ndef batch_calculate(expressions):\n    return [calculate(e) for e in expressions]",
+    "known_issues": [
+      "eval() on user-supplied input is remote code execution: `__import__('os').system('rm -rf /')` is a valid Python expression. Use `ast.literal_eval` or a real expression parser. handle_calc_request and batch_calculate both expose this RCE through any caller-provided expression."
+    ]
+  },
+  {
+    "id": "ST1",
+    "category": "style",
+    "code": "def process_order(order):\n    if order:\n        if order.items:\n            total = 0\n            for item in order.items:\n                if item.in_stock:\n                    if item.discount:\n                        if item.discount.valid:\n                            total += item.price * (1 - item.discount.amount)\n                        else:\n                            total += item.price\n                    else:\n                        total += item.price\n                else:\n                    return None\n            return total\n        else:\n            return 0\n    else:\n        return None",
+    "known_issues": [
+      "Deep nesting (5 levels) makes the control flow hard to follow; should be flattened via early returns or guard clauses.",
+      "Multiple semantically-overloaded return values (None means 'no order' AND 'out of stock'); a caller cannot distinguish them. Raise specific exceptions or return a result object."
+    ]
+  },
+  {
+    "id": "ST2",
+    "category": "style",
+    "code": "import json\n\n\ndef read_config(path):\n    with open(path) as f:\n        data = json.loads(f.read())\n    return data[\"api_key\"], data[\"endpoint\"], data[\"timeout\"]\n\n\ndef main():\n    api_key, endpoint, timeout = read_config(\"config.json\")\n    print(f\"Connecting to {endpoint}...\")",
+    "known_issues": [
+      "No error handling: read_config crashes opaquely on FileNotFoundError, JSONDecodeError, or KeyError. Should catch and re-raise with context, or return a typed Result.",
+      "Returning a 3-tuple is positional-fragile; reordering or adding a field silently breaks every caller. A dataclass or TypedDict would be safer."
+    ]
+  },
+  {
+    "id": "ST3",
+    "category": "style",
+    "code": "def calc_tax(p, q, r):\n    if r == \"US\":\n        return p * q * 0.07\n    elif r == \"EU\":\n        return p * q * 0.20\n    elif r == \"JP\":\n        return p * q * 0.10\n    return p * q * 0.0\n\n\ndef total_with_tax(p, q, r):\n    return p * q + calc_tax(p, q, r)",
+    "known_issues": [
+      "Single-letter parameter names (p, q, r) for business-domain values obscure intent; should be price, quantity, region.",
+      "Magic numbers (0.07, 0.20, 0.10) for tax rates should be named constants or a lookup table indexed by region."
+    ]
+  },
+  {
+    "id": "ST4",
+    "category": "style",
+    "code": "def check_password_strength(password: str) -> str:\n    \"\"\"Return a coarse-grained strength label for a password.\"\"\"\n    if len(password) < 8:\n        return \"weak\"\n    if len(password) < 12:\n        return \"medium\"\n    if len(password) < 16:\n        return \"strong\"\n    return \"very strong\"\n\n\ndef is_password_acceptable(password: str) -> bool:\n    return check_password_strength(password) in (\"strong\", \"very strong\")",
+    "known_issues": [
+      "Strength is judged on length alone; ignores character-class diversity (digits, symbols, mixed case), common-password lists, and entropy \u2014 the standard guidance from NIST SP 800-63B.",
+      "Magic numbers (8, 12, 16) and string return values ('weak', 'medium', ...) should be named constants or an Enum; is_password_acceptable is fragile to a future rename of a label string."
+    ]
+  },
+  {
+    "id": "ST5",
+    "category": "style",
+    "code": "def transfer_money(from_account, to_account, amount):\n    \"\"\"Move `amount` from one account to another and record the transfer.\"\"\"\n    from_account.balance -= amount\n    to_account.balance += amount\n    log_transfer(from_account.id, to_account.id, amount)\n    return True\n\n\ndef bulk_transfer(transfers):\n    \"\"\"Process a list of (src, dst, amount) tuples in order.\"\"\"\n    results = []\n    for src, dst, amount in transfers:\n        results.append(transfer_money(src, dst, amount))\n    return results",
+    "known_issues": [
+      "No input validation: negative amounts, same source and destination, insufficient balance, or None accounts are all silently accepted.",
+      "Not atomic: the two balance writes are not wrapped in a transaction, so a crash between them leaves money missing. log_transfer is also outside any transaction.",
+      "bulk_transfer has no per-item error isolation: a failure mid-list leaves some transfers applied and others not, with no rollback."
+    ]
+  },
+  {
+    "id": "ST6",
+    "category": "style",
+    "code": "def render_user_card(user):\n    html = \"<div class='card'>\"\n    html += f\"<h2>{user.name}</h2>\"\n    html += f\"<p>{user.bio}</p>\"\n    html += \"</div>\"\n    return html\n\n\ndef render_post_card(post):\n    html = \"<div class='card'>\"\n    html += f\"<h2>{post.title}</h2>\"\n    html += f\"<p>{post.summary}</p>\"\n    html += \"</div>\"\n    return html\n\n\ndef render_product_card(product):\n    html = \"<div class='card'>\"\n    html += f\"<h2>{product.name}</h2>\"\n    html += f\"<p>{product.description}</p>\"\n    html += \"</div>\"\n    return html",
+    "known_issues": [
+      "DRY violation: three near-identical functions that differ only in which attributes they pull. Should be one helper taking title and body strings, or a template-based renderer."
+    ]
+  },
+  {
+    "id": "ST7",
+    "category": "style",
+    "code": "import hashlib\n\n\ndef handle_signup(form_data, db, mailer):\n    if not form_data.get(\"email\") or \"@\" not in form_data[\"email\"]:\n        return {\"error\": \"Invalid email\"}\n    if len(form_data.get(\"password\", \"\")) < 8:\n        return {\"error\": \"Password too short\"}\n    user = User(email=form_data[\"email\"])\n    user.password_hash = hashlib.sha256(form_data[\"password\"].encode()).hexdigest()\n    db.session.add(user)\n    db.session.commit()\n    mailer.send(user.email, \"Welcome!\", \"Thanks for signing up\")\n    log_signup(user.id)\n    return {\"user_id\": user.id}",
+    "known_issues": [
+      "Single function handles validation, hashing, persistence, email, and logging \u2014 five responsibilities that should be separated for testability and to allow each step to fail/retry independently.",
+      "SHA-256 (unsalted, fast) used for password hashing \u2014 see also the security-category critique; mention here for maintainability since the hashing strategy is buried inside an HTTP handler."
+    ]
+  },
+  {
+    "id": "ST8",
+    "category": "style",
+    "code": "def safe_divide(a, b):\n    try:\n        return a / b\n    except:\n        return 0\n\n\ndef average(values):\n    try:\n        return safe_divide(sum(values), len(values))\n    except:\n        return 0",
+    "known_issues": [
+      "Bare `except:` swallows everything, including KeyboardInterrupt and SystemExit; should catch the specific exception (ZeroDivisionError) or at least `except Exception`.",
+      "Silently returning 0 on error hides bugs; the caller cannot distinguish 'real zero' from 'something went wrong'."
+    ]
+  },
+  {
+    "id": "ST9",
+    "category": "style",
+    "code": "_cache = {}\n\n\ndef get_user_data(user_id):\n    if user_id in _cache:\n        return _cache[user_id]\n    data = fetch_from_db(user_id)\n    _cache[user_id] = data\n    return data\n\n\ndef update_user(user_id, new_data):\n    save_to_db(user_id, new_data)",
+    "known_issues": [
+      "Mutable module-level cache with no invalidation: update_user writes to the DB but does not evict _cache[user_id], so subsequent reads return stale data.",
+      "Cache has no bound, no TTL, and is not thread-safe; should use functools.lru_cache, a TTL cache, or an explicit cache class."
+    ]
+  },
+  {
+    "id": "ST10",
+    "category": "style",
+    "code": "def find_user(user_id, db):\n    if user_id < 0:\n        return False\n    user = db.query(User).filter_by(id=user_id).first()\n    if user:\n        return user\n    return None\n\n\ndef display_name(user_id, db):\n    u = find_user(user_id, db)\n    if u:\n        return u.name\n    return \"Unknown\"",
+    "known_issues": [
+      "find_user returns three different types (User, False, None) depending on path; callers must remember which sentinel means what. Should consistently return Optional[User] and raise for invalid input."
+    ]
+  }
+]
