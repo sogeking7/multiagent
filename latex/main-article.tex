@@ -1,7 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Springer Nature LaTeX template
-%% Single-Agent vs. Role-Specialized Multi-Agent LLM Systems for Code Review:
-%% A Controlled Comparison Under Equal Token Budgets
+%% Single-Agent vs. Multi-Agent LLM Systems for Automated Code Review
 %% Astana IT University
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -25,6 +24,7 @@
 \usepackage{bbm}
 \usepackage{enumitem}
 \usepackage{hyperref}
+\hypersetup{hidelinks}
 \usepackage{cleveref}
 \usepackage{url}
 \usepackage{float}
@@ -88,7 +88,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
-\title[Single-Agent vs. Multi-Agent LLM Code Review Under Equal Token Budgets]{Single-Agent vs. Role-Specialized Multi-Agent LLM Systems for Code Review: A Controlled Comparison Under Equal Token Budgets}
+\title[Single-Agent vs. Multi-Agent LLM Systems for Automated Code Review]{Single-Agent vs. Multi-Agent LLM Systems for Automated Code Review}
 
 \author*[1]{\fnm{Kaiyrkhan} \sur{Kairolla}}\email{255484@astanait.edu.kz}
 
@@ -99,7 +99,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Abstract
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\abstract{The architectural choice between a single generalist LLM agent and a role-specialized multi-agent system is a key design decision in automated code review, since it determines defect coverage, review noise, and per-pull-request inference cost at scale. Practically such choices are frequently made on the basis of analogy with human review teams or on the headline numbers of benchmark papers, without a controlled comparison in which the total inference budget is held constant across architectures. This paper presents a controlled comparison of three code-review configurations based on \texttt{gpt-4o-mini} under an enforced 600-token output budget per sample: a single generalist agent (Config A), a sequential pipeline of role-specialized agents (Config B), and a parallel pipeline of role-specialized agents with an aggregator (Config C). The framework uses a combination of two hand-curated inputs: a 30-sample Python dataset with author-written canonical issue lists (10 logic, 10 security, 10 style snippets, 10--22 lines each), and a GPT-4o-as-judge scorer that grades every review on recall, precision, redundancy, and holistic relevance. Findings across the 30 samples indicate that role specialization did not improve recall under matched output-token budgets: the GPT-4o judge assigned a mean recall of $0.983$ to Config A, $0.939$ to Config B, and $0.806$ to Config C, and on no individual sample did either multi-agent configuration exceed the single agent on recall. Config B exhibited a mean redundancy of $1.733$ against Config A's $0.200$ --- nearly nine times higher despite each downstream specialist being explicitly instructed not to duplicate prior findings --- and Config C gained $7$ percentage points of mean precision over Config A ($0.550$ against $0.480$) at a $17.7$-percentage-point cost in mean recall. The paper generalizes the equal-budget critique of multi-agent systems from multi-hop reasoning~\cite{tran2025} to the code-review setting, through paired per-sample evaluation of three architectures under a fixed output-token budget.}
+\abstract{Automated code review is becoming an important part of modern software engineering because developers need faster ways to identify logic errors, security vulnerabilities, and maintainability problems before code is merged. Large language models can support this process, but it is still unclear whether a single generalist LLM agent or a role-specialized multi-agent system is the better architecture for this task. The main problem is that many multi-agent systems appear stronger because they use more model calls, more context passing, and more generated tokens. Therefore, architectural performance cannot be judged fairly unless the output-token budget is controlled. This research addresses the problem by comparing three LLM-based code review methods under the same 600-token output budget per code sample. The first method uses one single generalist agent that reviews logic, security, and style issues together. The second method uses a sequential multi-agent pipeline with separate Logic, Security, and Style reviewers. The third method uses parallel role-specialized reviewers followed by an Aggregator that produces the final review. All configurations use the same base model and are evaluated on a curated dataset of 30 Python code snippets with canonical issue lists. The evaluation uses GPT-4o-as-judge to measure recall, precision, redundancy, and relevance. The expected solution is not simply to add more agents, but to identify which architecture gives better code review quality when computational resources are equal. This study gives a controlled answer to what is being compared, why the comparison matters, and how the comparison is performed. It shows that equal-budget evaluation is necessary for deciding whether multi-agent specialization truly improves automated code review or mainly increases cost, duplication, and information loss.}
 
 \keywords{large language models, multi-agent systems, code review, software engineering automation, token budget, role specialization, GPT-4o-mini}
 
@@ -108,216 +108,241 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}\label{sec:intro}
 
-The issue of code review is a key activity in modern software engineering pipelines, and increasingly a host for LLM-based agents. What began as autocomplete assistance in editors has expanded into autonomous agents that draft code, write tests, generate pull-request descriptions, triage bugs, and review code before it is merged~\cite{yang2024}. The decision of how to architect such a reviewer --- as a single generalist call to a model, or as a coordinated team of role-specialized agents --- influences which defects the system catches, how much noise it adds to a pull-request thread, the developer trust the system accumulates over time, and how much an organization pays per review at the scale of an engineering team.
+Code review is a central practice in modern software engineering because it helps developers identify logic errors, security vulnerabilities, maintainability weaknesses, and design problems before code is merged into production. With the growth of large language models, software engineering tools are increasingly able to support tasks such as code generation, bug fixing, repository-level problem solving, and automated code review (Yang et al., 2024). Recent agent-based systems also show that LLMs can be organized into structured development roles such as programmer, reviewer, tester, planner, navigator, and executor (Qian et al., 2024; Phan et al., 2024).
 
-In the rapidly expanding ecosystem of LLM-assisted developer tools, where a new agent framework appears every few weeks and production teams are pushed to adopt one before they have validated it, this architectural choice has real consequences. Nonetheless, in most production deployments the choice is made without controlled empirical evidence and is instead made by analogy with human review teams --- a security engineer, a senior developer, a QA reviewer --- or by reference to benchmark papers whose compute envelopes were not held constant across the architectures being compared.
+One important design decision in LLM-based code review is whether the reviewer should be implemented as a single generalist agent or as a group of role-specialized agents. Multi-agent systems are often motivated by analogy with human software teams, where different specialists focus on logic, security, testing, or maintainability. Prior work has proposed multi-agent architectures for software development automation and security-oriented code review, suggesting that specialization may improve the depth and structure of model outputs (Chen, 2025; Khanzadeh, 2025). However, this assumption remains methodologically uncertain because multi-agent systems often use more LLM calls, more context passing, and more generated tokens than single-agent baselines.
 
-Meanwhile, a clean empirical method for adjudicating the question has been articulated in the broader LLM literature but has not yet been applied to code review. Tran and Kiela~\cite{tran2025} demonstrated on multi-hop reasoning benchmarks that the observed performance advantages of multi-agent systems over single-agent baselines largely dissolve when output token budgets are equalized across architectures. Their account attributes the apparent multi-agent advantage to disproportionately larger compute expenditure rather than to architectural innovation per se: each inter-agent compression step, in which the rich internal reasoning of one agent is collapsed into a natural-language summary that the next must re-interpret, introduces potential signal loss that a single unmediated forward pass does not face. In a closely related software-engineering setting, Yang et al.~\cite{yang2024} report that the design of the Agent-Computer Interface in SWE-agent was more predictive of task performance on SWE-bench than the addition of multiple specialized agent roles.
+The main problem is that architectural improvement and computational budget are often mixed together in existing comparisons. If a multi-agent system produces better results while using more output tokens, the improvement may come from additional computation rather than from role specialization itself. Tran and Kiela (2025) showed that, in multi-hop reasoning tasks, single-agent LLMs can match or outperform multi-agent systems when thinking-token budgets are equalized. Similarly, work on SWE-agent indicates that the quality of the agent-computer interface and context history can be more important than simply adding more specialized agent roles (Yang et al., 2024).
 
-Code review is a natural setting in which to revisit this question for software engineering specifically. Reviews are bounded in scope, are evaluable against a ground-truth list of defects, and decompose along (logic / security / style) lines that map directly onto the role boundaries multi-agent architectures typically impose. If role specialization is going to help anywhere, it ought to help here. Yet the question of whether it actually does --- under an equal-budget control --- has not been answered in this setting.
+This problem is especially important for automated code review because missed defects, duplicated comments, and false-positive warnings can directly affect developer trust and software quality. Role-specialized reviewers may also create role-pressure effects, where an agent searches for issues that fit its assigned role even when such issues are not actually present. This risk is related to confirmation bias in LLM-assisted security code review, where security-oriented prompts may push models toward security-shaped findings (Dong et al., 2025).
 
-Based on this, the research question guiding the present work is: \emph{Given a fixed output-token budget per sample, does role-specialized multi-agent code review (sequential or parallel-plus-aggregator) produce better reviews than a single generalist agent operating under the same budget?} The framing is methodologically deliberate. A multi-agent system that issues four LLM calls and generates 1{,}800 total output tokens is not cleanly comparable, on the architectural question, to a single agent generating 600 tokens --- any observed difference is jointly attributable to topology and to compute. We hold output tokens constant to isolate the architectural contribution from the compute contribution.
+Therefore, this study compares single-agent and role-specialized multi-agent LLM systems under the same 600-token output budget per code sample. Three configurations are evaluated: a single generalist reviewer, a sequential pipeline with Logic, Security, and Style reviewers, and a parallel multi-agent system with an Aggregator. The evaluation uses a curated dataset of 30 Python code snippets and applies an LLM-as-judge protocol, which is appropriate for open-ended review evaluation because semantic correctness cannot be fully captured by simple lexical metrics (Zheng et al., 2023).
 
-\subsection*{Contributions}
+The main research question is: \emph{Given a fixed output-token budget, does a role-specialized multi-agent LLM system produce better automated code reviews than a single generalist LLM agent?}
 
-Based on these observations, this paper makes the following contributions:
-
-\begin{enumerate}
-    \item We design a controlled experimental methodology that enforces an equal 600-token output budget per sample across three architectures and verifies compliance against logged \texttt{usage.completion\_tokens} on every API call.
-    \item We construct a hand-curated 30-sample Python dataset stratified into three categories of defect (logic, security, style/maintainability), with author-written canonical issue lists serving as the recall ground truth.
-    \item We report that across all 30 samples and both multi-agent architectures, no multi-agent configuration achieved a recall advantage over the single agent on any individual sample, with the aggregate recall gap concentrated entirely in style/maintainability defects.
-    \item We characterize the specific failure modes responsible: role-restriction hallucination in the sequential pipeline, aggregator compression loss in the parallel-plus-aggregator pipeline, and the failure of prompted deduplication to suppress sequential redundancy.
-    \item We provide a cost analysis showing that the single agent cost approximately 45\% less per sample than either multi-agent configuration while delivering higher recall.
-\end{enumerate}
-
-The rest of this paper is organized in the following way. Section~\ref{sec:related_work} reviews related work on multi-agent systems for software engineering, on the single-versus-multi-agent debate, and on LLM-as-judge evaluation. Section~\ref{sec:methodology} describes the experimental design. Section~\ref{sec:results} reports quantitative and qualitative results. Section~\ref{sec:discussion} discusses the mechanisms behind the results and their practical implications. Section~\ref{sec:limitations} addresses limitations and future directions. Section~\ref{sec:conclusion} concludes.
+The contribution of this work is a controlled experimental comparison showing whether multi-agent specialization improves code review quality when computational resources are held constant. The study focuses on what is being compared, why the comparison matters, and how fair evaluation can be performed using equal token-budget control.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Related Work}\label{sec:related_work}
+\section{Literature Review}\label{sec:literature_review}
 
-\subsection{Multi-Agent Systems for Software Engineering}
+\subsection{Large Language Models in Software Engineering}
 
-Multi-agent systems for software engineering have been widely explored across code generation, repository-level engineering, and code reviewing tasks. The seminal ChatDev framework~\cite{qian2024} organized multiple LLM agents into structured corporate roles --- Chief Executive Officer, Chief Technology Officer, programmer, reviewer, and tester --- and coordinated them through formatted chat turns to automate the full software development lifecycle, lending influential empirical support to the premise that specialization and structured communication enhance LLM output quality.
+Large language models are now used in many software engineering tasks. They can write code, explain code, generate tests, fix bugs, and support repository level development. This change has made LLMs important tools for software teams. SWE agent shows that an LLM can solve software engineering tasks when it has a clear interface to the code environment (Yang et al., 2024). ChatDev also shows that LLM agents can be organized into development roles such as programmer, reviewer, and tester (Qian et al., 2024).
 
-Subsequent work elaborated this premise at greater architectural scale. Phan et al.~\cite{phan2024} present HyperAgent, a four-agent pipeline (Planner, Navigator, Code Editor, Executor) that decomposes repository-level engineering tasks into specialized subtasks and achieved state-of-the-art results on SWE-bench at the time of publication, showing that specialization of subtask responsibility could yield measurable improvements on complex, multi-step engineering challenges. Khanzadeh~\cite{khanzadeh2025} extends the pattern in AgentMesh, a layered cooperative framework in which agents at different hierarchical levels communicate via structured protocols and which the author argues scales to multi-repository settings.
+These studies show that LLMs are useful for software engineering automation. However, model performance does not depend only on the model itself. It also depends on how the system is designed. A model can be used as one general agent. It can also be divided into several role based agents. This design choice is important because it changes the cost, output quality, and reliability of the system.
 
-In this landscape, Chen~\cite{chen2025} proposed AutoReview, a three-agent architecture specialized for security-oriented code review at FSE 2025, arguing that dedicating separate model instances to vulnerability identification enables deeper analytical penetration than a single generalist prompt scanning for all issue types simultaneously. AutoReview is the closest prior work to ours in problem framing, though it does not hold the per-system inference budget constant across the architectures it compares --- so the contribution of architectural specialization in its reported numbers cannot be cleanly separated from raw compute expenditure.
+\subsection{Need for LLM Based Automated Code Review}
 
-\subsection{Challenges to Multi-Agent Superiority}
+Code review is used to improve software quality before code is merged. It helps developers find logic errors, security problems, style issues, and maintainability weaknesses. Manual code review is useful, but it can be slow. It also depends on reviewer experience and available time. LLM based review can support developers by producing faster feedback and by checking code for common problems.
 
-The advent of equal-budget benchmarking has provided a new line of inquiry into agent comparisons. Tran and Kiela~\cite{tran2025} conducted controlled experiments on multi-hop reasoning tasks and report that when output token budgets --- the tokens devoted to generation, or ``thinking tokens'' --- are equalized across single-agent and multi-agent configurations, single agents consistently match or outperform multi-agent equivalents. The authors attribute this finding to the fact that a single agent retains direct, unmediated access to the full task representation at every generation step, whereas inter-agent communication necessarily involves compressing rich internal reasoning into natural-language summaries that the next agent must re-interpret. Each compression and re-expansion step introduces potential for signal loss, misinterpretation, and drift from the original task specification.
+Automated code review is especially useful when teams need quick review support. It can help with pull request screening, security checking, and maintainability analysis. Security oriented review is one important direction. AutoReview proposes a multi agent LLM system for security issue oriented code review (Chen, 2025). This shows that LLMs can be applied to code review tasks where domain knowledge is needed.
 
-Yang et al.~\cite{yang2024} provide complementary evidence from the software engineering domain. SWE-agent's primary contribution was the design of an Agent-Computer Interface that enables fluid interaction between a single LLM and a software repository. The authors report that the quality of the interface --- the linearity and completeness of the agent's context history --- was more predictive of performance than the addition of multiple specialized agent roles, and that minimal single-agent implementations leveraging clean linear histories frequently matched or exceeded multi-agent baselines.
+At the same time, automated review must be used carefully. A review system that misses real bugs can create risk. A system that produces too many weak comments can reduce developer trust. For this reason, code review quality should be measured through recall, precision, redundancy, and relevance. These metrics help show both the value and the noise of generated reviews.
 
-Dong et al.~\cite{dong2025} document an additional risk specific to role-restricted reviewing. LLM agents prompted to adopt fixed reviewer roles are susceptible to role-anchored confirmation bias: a security-designated agent, instructed to find vulnerabilities and given example vulnerability patterns, tends to find security-shaped artifacts even in code where no genuine vulnerabilities exist. This hallucination-by-role-pressure dynamic is a structural risk in multi-agent code-review pipelines that single-agent generalist prompts do not face in the same way --- we return to it in Section~\ref{sec:discussion}.
+\subsection{Single Agent and Multi Agent LLM Systems}
 
-Although such systems demonstrate the worth of multi-agent decomposition in complex software engineering problems, none of them have been compared to single-agent baselines under an equal output-token budget in the code-review setting specifically. The current work expands the equal-budget paradigm of Tran and Kiela~\cite{tran2025} to LLM-based code review and addresses a gap that the surveyed literature has not yet resolved.
+A single agent system uses one general reviewer for the whole task. In code review, this agent reads the code and checks logic, security, and style together. This design is simple. It has one context and one final output. It also avoids communication between agents.
 
-\subsection{LLM-as-Judge Evaluation}
+A multi agent system divides the same task between several agents. Each agent has a specific role. For example, one agent may review logic, another may review security, and another may review style. Multi agent systems are popular because they look similar to human expert teams. ChatDev uses role based agents for software development tasks (Qian et al., 2024). HyperAgent also uses several agents for repository level software engineering tasks (Phan et al., 2024). AgentMesh follows a cooperative multi agent design for software development automation (Khanzadeh, 2025).
 
-Evaluating the quality of open-ended generated text --- including code reviews --- presents methodological challenges that simple automated metrics cannot resolve. Human annotation is costly and subject to inter-rater variability; traditional NLP metrics such as BLEU and ROUGE are inadequate for evaluating analytical depth against a semantic ground truth. Zheng et al.~\cite{zheng2023} describe the LLM-as-judge paradigm and report that, against human pairwise preferences on Chatbot Arena and MT-bench, a strong LLM (GPT-4) agreed with the majority human verdict at a rate comparable to human-human agreement. The paradigm is well suited to code-review evaluation: the judge sees the source code, the canonical known-issue list, and the review under evaluation, and is asked to score recall, precision, redundancy, and holistic relevance against a structured rubric. We use GPT-4o as judge for reviews produced by \texttt{gpt-4o-mini}; known concerns about in-family bias and rubric sensitivity are addressed in Section~\ref{sec:limitations}.
+The main advantage of multi agent systems is specialization. A specialist can focus on a narrow part of the task. This can make the review more structured. However, specialization can also create problems. Agents may repeat the same finding. They may also lose information when one agent output is passed to another agent. In some cases, a role based prompt can push an agent to find issues that match its role even when such issues are weak or absent. This risk is related to confirmation bias in LLM assisted security code review (Dong et al., 2025).
+
+\subsection{Equal Token Budget Evaluation}
+
+A fair comparison between single agent and multi agent systems needs budget control. Multi agent systems often use more model calls. They also use more input context and more generated text. If they perform better, the reason may be extra computation rather than better architecture.
+
+Tran and Kiela (2025) argue that single agent LLMs can outperform multi agent systems on multi hop reasoning when thinking token budgets are equal. This finding is important for code review. It means that architecture should not be judged without controlling the number of output tokens. A multi agent system that produces more text is not directly comparable to a single agent system that produces less text.
+
+For this reason, equal output token budget is central to this research. The study compares three review configurations under the same 600 token output limit per code sample. This makes the comparison more controlled. It helps answer whether role specialization itself improves review quality.
+
+\subsection{LLM as Judge Evaluation}
+
+Evaluating generated code reviews is difficult. A review can be correct even if it does not use the exact words from the reference answer. Simple text matching is not enough. Human evaluation is useful, but it is slow and expensive. It can also vary between reviewers.
+
+LLM as judge evaluation is one solution for this problem. A stronger model can compare the generated review with the code and the known issue list. Zheng et al. (2023) show that strong LLM judges can be useful for evaluating open ended model outputs. In this research, GPT 4o is used as the judge. It evaluates each review using recall, precision, redundancy, and relevance.
+
+This evaluation method is suitable for automated code review because the task is semantic. The judge can accept near paraphrases of the same issue. It can also detect duplicate comments. This is important because code review quality depends not only on finding issues. It also depends on avoiding unnecessary repetition and irrelevant warnings.
+
+\subsection{Summary of the Literature Gap}
+
+The literature shows that LLMs are useful in software engineering. It also shows that multi agent systems are popular for complex tasks. However, many studies do not clearly separate architecture from computation. Multi agent systems may look better because they use more calls and more generated tokens.
+
+There is still a need for controlled research in automated code review. The key question is whether multi agent specialization improves review quality when the output token budget is fixed. This study addresses that gap by comparing a single generalist reviewer with sequential and parallel role specialized reviewers under the same token budget.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Methodology}\label{sec:methodology}
+\section{Related Works}\label{sec:related_works}
 
-This section formalizes the experimental design as a paired-architectures, fixed-budget comparison and defines the inputs, configurations, and evaluation operations underlying the framework.
-
-\subsection{Research Question and Pre-Registered Hypothesis}
-
-The research question motivating the study has been stated in Section~\ref{sec:intro} and is repeated here for reference: \emph{Given a fixed output-token budget per sample, does role-specialized multi-agent code review (sequential or parallel with aggregator) produce better reviews than a single generalist agent operating under the same budget?}
-
-The framing is methodologically significant. The dominant prior claim --- that multi-agent systems produce better code reviews --- has almost universally been tested without controlling for computational resources. A multi-agent system that issues four LLM calls and generates 1{,}800 total output tokens is not directly comparable, architecturally, to a single agent generating 600 tokens; any performance advantage in such comparisons is jointly attributable to topology and to the simple fact of more compute. The present design holds output-token budget constant to isolate the architectural contribution.
-
-The hypothesis, pre-registered and framed as the multi-agent claim under test, was: role-specialized multi-agent review (Configs B and C) will produce higher recall and lower redundancy than a single generalist agent (Config A) at the same total output-token budget, because (i) focused-role prompts admit denser, less hedged reviews per role, and (ii) explicit deduplication --- sequential context-sharing in B or an aggregator in C --- should keep the final output clean.
-
-\subsection{Dataset}\label{sec:data}
-
-The empirical basis consists of a hand-authored 30-sample Python dataset, constructed in lieu of drawing on a pre-existing benchmark. Existing benchmarks such as SWE-bench consist of real-world pull requests and issues where the ground truth is a merged patch or a discussion thread, which makes precise recall measurement against a fixed issue list impractical. We did not draw on those benchmarks because the experimental control we required --- a closed, author-written list of canonical issues per sample, against which recall can be scored without judge-side speculation --- is not present in them. The implications of this choice for external validity are discussed in Section~\ref{sec:limitations}.
-
-Each snippet is 10 to 22 lines long and represents a self-contained function or pair of functions. The 30 samples are stratified into three equal categories of ten (Table~\ref{tab:dataset}).
+Table~\ref{tab:related_works} summarizes representative studies on LLM-based agents in software engineering and code review, the equal token-budget evaluation paradigm, and LLM-as-judge methodology. The final row positions the current study within this body of work.
 
 \begin{table}[ht]
-\caption{Composition of the 30-sample Python dataset.}
-\label{tab:dataset}
-\begin{tabular}{@{}lll@{}}
+\caption{Summary of related works on LLM-based agents in software engineering and code review.}
+\label{tab:related_works}
+\footnotesize
+\begin{tabular}{@{}p{0.5cm}p{2.1cm}p{0.7cm}p{2.2cm}p{5.0cm}@{}}
 \toprule
-Category & $n$ & Example defect classes \\
+S.~No. & Authors & Year & Application & Techniques used \\
 \midrule
-Logic (L1--L10) & 10 & off-by-one pagination; missing empty-input case; \\
-                &    & mutable default arg; late-binding closure; \\
-                &    & integer floor-division on a mean; float-equality on money \\
+1 & Qian et al. & 2024 & Software development automation & Multi agent role based framework with CEO, CTO, programmer, reviewer, and tester agents. The system uses structured communication between agents to support the software development lifecycle. \\
 \midrule
-Security (S1--S10) & 10 & SQL injection via f-string; hardcoded credentials; \\
-                   &    & \texttt{pickle.loads} on a cookie; path traversal; SSRF; \\
-                   &    & command injection (\texttt{shell=True}); \texttt{eval()} on user input \\
+2 & Yang et al. & 2024 & Autonomous software engineering tasks & Single LLM agent with an agent computer interface. The system uses repository interaction, context history, and tool based execution to solve issues from SWE bench. \\
 \midrule
-Style / maintainability (ST1--ST10) & 10 & 5-level nested \texttt{if}; bare \texttt{except}; DRY violation; \\
-                                    &    & SRP violation; magic constants; mutable global cache; \\
-                                    &    & inconsistent return types \\
+3 & Phan et al. & 2024 & Repository level coding tasks & Generalist software engineering agent system with Planner, Navigator, Code Editor, and Executor agents. The approach decomposes repository tasks into specialized steps. \\
+\midrule
+4 & Chen & 2025 & Security issue oriented code review & LLM based multi agent architecture for vulnerability focused code review. The system uses separate agents to identify and analyze security issues. \\
+\midrule
+5 & Khanzadeh & 2025 & Software development automation & Cooperative multi agent generative AI framework. The system uses layered agents and structured communication for software engineering workflows. \\
+\midrule
+6 & Tran and Kiela & 2025 & Single agent and multi agent reasoning comparison & Equal thinking token budget evaluation. The study compares single agent and multi agent LLM systems under controlled output token budgets. \\
+\midrule
+7 & Dong et al. & 2025 & LLM assisted security code review & Analysis of confirmation bias in security review. The study examines how prompts and reviewer roles can push models toward security shaped findings. \\
+\midrule
+8 & Zheng et al. & 2023 & Evaluation of open ended LLM outputs & LLM as judge evaluation using MT bench and Chatbot Arena. The work studies how strong LLMs can evaluate model responses against human preferences. \\
+\midrule
+9 & Current study & 2026 & Automated code review under equal token budget & Controlled comparison of a single generalist reviewer, a sequential role specialized reviewer system, and a parallel reviewer system with an aggregator. The evaluation uses recall, precision, redundancy, relevance, and cost. \\
 \botrule
 \end{tabular}
 \end{table}
 
-Each sample carries one to three canonical issues in its \texttt{known\_issues} list. Several samples carry multiple known issues, which makes recall scoring more discriminating than a one-issue-per-sample design would be.
+The reviewed works show that LLMs are useful in software engineering and code review. Many studies support multi agent design because role specialization can divide complex tasks into smaller parts. However, most prior systems do not fully control the inference budget. This makes it difficult to know whether better results come from the architecture or from extra computation.
 
-\subsection{Experimental Configurations}
+The current study follows the style of previous comparative research, but it focuses on a different problem. It compares single agent and multi agent LLM code review under the same output token budget. This makes the comparison more controlled and more suitable for judging architectural value.
 
-All agent calls use \texttt{gpt-4o-mini} as the base model. The three configurations differ in topology and in the way they partition a shared 600-token output budget across calls. Figure~\ref{fig:architecture} sketches the three architectures side by side.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Methodology}\label{sec:methodology}
+
+This study follows a controlled experimental design. The goal is to compare single-agent and multi-agent LLM architectures for automated code review under an equal output-token budget. All configurations use the same base model, \texttt{gpt-4o-mini}, and each sample is reviewed under a maximum total output budget of 600 tokens.
+
+Three configurations are evaluated:
+\begin{enumerate}[leftmargin=*,itemsep=2pt,topsep=2pt]
+    \item \textbf{Config A --- Single Agent}: one generalist code-review agent analyzes logic, security, and style issues in a single response. It receives the full 600-token output budget.
+    \item \textbf{Config B --- Sequential Multi-Agent}: three role-specialized agents work sequentially: Logic Reviewer $\rightarrow$ Security Reviewer $\rightarrow$ Style Reviewer. Each receives 200 output tokens.
+    \item \textbf{Config C --- Parallel Multi-Agent + Aggregator}: three role-specialized reviewers work in parallel, then an Aggregator merges their findings. Each of the four calls receives 150 output tokens.
+\end{enumerate}
+
+The dataset consists of 30 hand-curated Python snippets, divided into 10 logic bugs, 10 security vulnerabilities, and 10 style or maintainability issues. Each sample includes a canonical list of known issues, which serves as the ground truth for recall evaluation.
+
+Evaluation is performed using GPT-4o-as-judge. For each review, the judge receives the source code, the canonical issue list, and the generated review. It assigns scores for recall, precision, redundancy, and relevance. This allows the study to compare not only the number of real defects identified, but also the amount of noise, duplication, and overall usefulness of each review.
+
+\subsection{Methodology Diagram}\label{sec:methodology_diagram}
+
+Figure~\ref{fig:methodology} summarizes the overall pipeline. A Python code sample enters the configuration selector, which dispatches it to one of the three review architectures. Config~A produces its review through a single generalist agent. Config~B passes the code through Logic, Security, and Style reviewers in sequence. Config~C runs Logic, Security, and Style reviewers in parallel and then merges their findings through an Aggregator. All three configurations emit a generated code review that the GPT-4o judge evaluates along four dimensions: recall, precision, redundancy, and relevance.
 
 \begin{figure}[!htbp]
 \centering
 \begin{tikzpicture}[
   font=\footnotesize,
   >={Stealth[length=2mm, width=1.5mm]},
-  code/.style={
-    draw=black, line width=0.4pt,
+  io/.style={
+    draw=black!75, line width=0.5pt,
     fill=black!4,
-    rounded corners=2pt,
-    text width=1.8cm,
-    minimum height=0.7cm,
+    rounded corners=3pt,
+    text width=3.2cm,
+    minimum height=0.8cm,
     align=center,
     inner sep=2pt
   },
+  decision/.style={
+    draw=black!75, line width=0.5pt,
+    fill=black!6,
+    diamond, aspect=2,
+    text width=2.4cm,
+    align=center,
+    inner sep=1pt
+  },
   agent/.style={
-    draw=black, line width=0.5pt,
+    draw=black!75, line width=0.5pt,
     fill=white,
     rounded corners=2pt,
-    text width=1.8cm,
-    minimum height=1.0cm,
+    text width=2.4cm,
+    minimum height=0.85cm,
     align=center,
     inner sep=2pt
   },
   aggregator/.style={
-    draw=black, line width=0.6pt,
-    fill=black!8,
+    draw=black!75, line width=0.6pt,
+    fill=black!10,
     rounded corners=2pt,
-    text width=1.8cm,
-    minimum height=1.0cm,
+    text width=2.4cm,
+    minimum height=0.85cm,
     align=center,
     inner sep=2pt
   },
-  out/.style={
-    draw=black, line width=0.4pt,
+  metric/.style={
+    draw=black!75, line width=0.4pt,
     fill=black!4,
     rounded corners=2pt,
-    text width=1.8cm,
+    text width=1.7cm,
     minimum height=0.7cm,
     align=center,
     inner sep=2pt
   },
-  arr/.style={->, line width=0.4pt, draw=black!75},
-  title/.style={font=\small\bfseries, align=center}
+  arr/.style={->, line width=0.4pt, draw=black!75}
 ]
 
-% ===== Config A =====
-\node[title] at (0, 0.7) {Config A: Single (600 tokens)};
-\node[code]  (Acode) at (-1.8, 0)    {Code};
-\node[agent] (Aagent) at (0, 0)      {\textbf{Reviewer}\\\scriptsize 600 tokens};
-\node[out]   (Aout) at (1.8, 0)      {Review};
-\draw[arr] (Acode) -- (Aagent);
-\draw[arr] (Aagent) -- (Aout);
+% Top: Python code sample
+\node[io] (code) at (0, 0) {Python Code Sample};
 
-% ===== Config B =====
-\node[title] at (0, -2) {Config B: Sequential ($3\!\times\!200$ tokens)};
-\node[code]  (Bcode) at (-4, -3) {Code};
-\node[agent] (Blogic) at (-2, -3) {\textbf{Logic}\\\scriptsize 200 tok};
-\node[agent] (Bsec) at (0, -3) {\textbf{Security}\\\scriptsize 200 tok};
-\node[agent] (Bstyle) at (2, -3) {\textbf{Style}\\\scriptsize 200 tok};
-\node[out]   (Bout) at (4, -3) {Review\\\scriptsize (concat)};
-\draw[arr] (Bcode) -- (Blogic);
-\draw[arr] (Blogic) -- (Bsec);
-\draw[arr] (Bsec) -- (Bstyle);
-\draw[arr] (Bstyle) -- (Bout);
+% Configuration selector
+\node[decision] (config) at (0, -1.3) {Configuration};
 
-% ===== Config C =====
-\node[title] at (0, -5) {Config C: Parallel + Aggregator ($3\!\times\!150 + 150$ tokens)};
-\node[code]  (Ccode) at (-4, -6.3) {Code};
-\node[agent] (Clogic) at (-1.5, -5.6) {\textbf{Logic}\\\scriptsize 150 tok};
-\node[agent] (Csec) at (-1.5, -6.8) {\textbf{Security}\\\scriptsize 150 tok};
-\node[agent] (Cstyle) at (-1.5, -8.0) {\textbf{Style}\\\scriptsize 150 tok};
-\node[aggregator] (Cagg) at (1.5, -6.8) {\textbf{Aggregator}\\\scriptsize 150 tok};
-\node[out]   (Cout) at (4, -6.8) {Review};
-\draw[arr] (Ccode) -- (Clogic);
-\draw[arr] (Ccode) -- (Csec);
-\draw[arr] (Ccode) -- (Cstyle);
-\draw[arr] (Clogic) -- (Cagg);
-\draw[arr] (Csec) -- (Cagg);
-\draw[arr] (Cstyle) -- (Cagg);
-\draw[arr] (Cagg) -- (Cout);
+% Three branches
+% Config A (left)
+\node[agent] (a) at (-5.0, -2.8) {\textbf{Config A:}\\Single Generalist\\Agent};
+
+% Config B (center, sequential)
+\node[agent] (b1) at (0, -2.8) {\textbf{Config B:}\\Logic Reviewer};
+\node[agent] (b2) at (0, -4.1) {Security Reviewer};
+\node[agent] (b3) at (0, -5.4) {Style Reviewer};
+
+% Config C (right, parallel + aggregator)
+\node[agent] (c1) at (5.0, -2.8) {\textbf{Config C:}\\Logic Reviewer};
+\node[agent] (c2) at (5.0, -4.1) {Security Reviewer};
+\node[agent] (c3) at (5.0, -5.4) {Style Reviewer};
+\node[aggregator] (cagg) at (7.5, -4.1) {Aggregator};
+
+% Convergence
+\node[io] (review) at (0, -7.0) {Generated Code Review};
+\node[io] (judge) at (0, -8.4) {GPT-4o Judge};
+
+% Metrics row
+\node[metric] (recall) at (-4.5, -9.7) {Recall};
+\node[metric] (precision) at (-1.5, -9.7) {Precision};
+\node[metric] (redundancy) at (1.5, -9.7) {Redundancy};
+\node[metric] (relevance) at (4.5, -9.7) {Relevance};
+
+% Arrows
+\draw[arr] (code) -- (config);
+\draw[arr] (config.west) -| (a.north);
+\draw[arr] (config) -- (b1);
+\draw[arr] (config.east) -| (c1.north);
+\draw[arr] (config.east) -| (c2.north);
+\draw[arr] (config.east) -| (c3.north);
+
+% Config B sequential
+\draw[arr] (b1) -- (b2);
+\draw[arr] (b2) -- (b3);
+
+% Config C parallel into aggregator
+\draw[arr] (c1.east) -| (cagg.north);
+\draw[arr] (c2.east) -- (cagg.west);
+\draw[arr] (c3.east) -| (cagg.south);
+
+% Branches converge into review
+\draw[arr] (a.south) |- (review.west);
+\draw[arr] (b3.south) -- (review.north);
+\draw[arr] (cagg.south) |- (review.east);
+
+% Review -> Judge -> Metrics
+\draw[arr] (review) -- (judge);
+\draw[arr] (judge.south) -- ++(0, -0.5) -| (recall.north);
+\draw[arr] (judge.south) -- ++(0, -0.5) -| (precision.north);
+\draw[arr] (judge.south) -- ++(0, -0.5) -| (redundancy.north);
+\draw[arr] (judge.south) -- ++(0, -0.5) -| (relevance.north);
 
 \end{tikzpicture}
-\caption{The three configurations under comparison. All three operate under an equal 600-token total output budget per sample. Config A allocates the full budget to a single generalist call. Config B splits 200 tokens to each of three specialists run sequentially, with later specialists reading the original code plus all prior reviews. Config C allocates 150 tokens to each of three specialists run in parallel (no cross-visibility), plus 150 tokens to a downstream Aggregator agent.}
-\label{fig:architecture}
+\caption{Methodology pipeline. A Python code sample is dispatched to one of three review architectures (Config A: single generalist agent; Config B: sequential Logic $\rightarrow$ Security $\rightarrow$ Style reviewers; Config C: parallel Logic, Security, and Style reviewers with an Aggregator). All configurations operate under an equal 600-token output budget per sample. The resulting code review is evaluated by a GPT-4o judge along four dimensions: recall, precision, redundancy, and relevance.}
+\label{fig:methodology}
 \end{figure}
-
-\paragraph{Config A --- Single Generalist Agent.} One LLM call per sample with a system prompt asking the model to produce a numbered list of logic, security, and style issues. The user message is the raw source code with no additional framing. The full 600-token output budget is available to this single call. The system prompt is reproduced verbatim in Appendix~\ref{app:prompts}.
-
-\paragraph{Config B --- Sequential Multi-Agent.} Three role-specialized agents execute in a fixed order: Logic Reviewer $\rightarrow$ Security Reviewer $\rightarrow$ Style Reviewer. Each agent receives the original source code and the verbatim text of all preceding reviews, and is explicitly instructed not to duplicate findings already raised. The 600-token budget is split equally at 200 tokens per agent. The artifact passed to the judge is the concatenation of the three specialist sections.
-
-\paragraph{Config C --- Parallel Multi-Agent with Aggregator.} Three role-specialized agents --- with the same role definitions as Config B's specialists --- execute independently and concurrently via \texttt{asyncio.gather}. They cannot deduplicate against one another because they cannot see one another's outputs at generation time. A fourth Aggregator agent then receives the original code and all three specialist reviews and is instructed to merge their findings into a unified, deduplicated numbered list. The 600-token budget is split as 150 tokens to each specialist and 150 tokens to the Aggregator. The Aggregator's output is the artifact passed to the judge.
-
-All agent calls run at \texttt{temperature}~$=0.2$ --- low enough to keep output focused but non-zero, so that the three Config C specialists do not produce literally identical text, which would inflate the redundancy metric artifactually. We did not tune sampling temperature further because the task is structured rather than open-ended and the prompts request a numbered-list output format.
-
-\subsection{Token Budget Enforcement and Verification}
-
-The \texttt{max\_tokens} parameter on each API call sets the per-call cap (600 for A; 200, 200, 200 for B; 150, 150, 150, 150 for C). Every API response carries a \texttt{usage.completion\_tokens} field, which the harness logs for every call and aggregates after the run.
-
-Across all 30 samples and all configurations, no individual API call exceeded its assigned cap on any call. Mean output tokens were $434.7$ for Config A (against a 600-token cap), a total of $538.1$ across the three Config B specialists per sample (an average of $179.4$ per specialist call against a 200-token cap), and a total of $569.1$ across the three Config C specialists plus the Aggregator (an average of $142.3$ per call against a 150-token cap). The experiment therefore confirms budget compliance at the per-call level.
-
-Input tokens are not equalized across configurations and we did not attempt to equalize them. Config B agents must read prior reviews in addition to the source code; Config C's Aggregator must read all three specialist outputs. This is a structural property of the architectures, not an experimental artifact: any real deployment of either multi-agent design incurs this input overhead. We report input, output, and total tokens separately so that the asymmetry remains visible to the reader.
-
-\subsection{Evaluation Protocol}
-
-Each of the $30 \times 3 = 90$ (sample, configuration) pairs is scored by a GPT-4o judge. The judge receives three inputs: (1) the original source code, (2) the canonical \texttt{known\_issues} list for that sample, and (3) the final review text produced by the configuration under evaluation. The judge returns a structured JSON object with four scored dimensions and a one-sentence reasoning trace:
-
-\begin{itemize}[noitemsep,topsep=2pt]
-    \item \texttt{recall\_score} $\in [0.0, 1.0]$: the fraction of canonical known issues the review identifies, where near-paraphrases count as identifications.
-    \item \texttt{precision\_score} $\in [0.0, 1.0]$: the fraction of distinct issues raised in the review that are valid real problems in the code, whether or not they appear in the canonical list.
-    \item \texttt{redundancy\_count} $\in \mathbb{Z}_{\geq 0}$: the count of duplicate or near-duplicate points within the review.
-    \item \texttt{relevance\_score} $\in \{1, 2, 3, 4, 5\}$: a holistic rating of the review as a code-review artifact.
-\end{itemize}
-
-The judge is explicitly instructed to count near-paraphrases as recall hits, so that stylistic variation in how an issue is described does not artifactually penalize the recall score. Judge calls run at \texttt{temperature}~$=0.0$, \texttt{max\_tokens}~$=400$, and \texttt{response\_format}~$=$~\texttt{\{"type": "json\_object"\}} to enforce structured output. The harness defensively extracts the JSON object from the response, clamps each scored field into its expected range, and treats parse failures as scoring failures. Across all 90 judge calls in the reported run, zero parse errors occurred.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Results}\label{sec:results}
